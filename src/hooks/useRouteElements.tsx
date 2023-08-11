@@ -2,6 +2,7 @@ import MainLayout from "../layouts/MainLayout";
 import Home from "../pages/Home";
 import { useRoutes } from "react-router-dom";
 import NotFound from "../pages/NotFound/NotFound";
+import Login from "../pages/Auth/Login";
 function useRouteElements() {
   const myRoutes = [
     {
@@ -12,6 +13,10 @@ function useRouteElements() {
           element: <Home />,
         },
       ],
+    },
+    {
+      path: "/authenticate",
+      element: <Login />,
     },
     {
       path: "*",
