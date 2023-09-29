@@ -1,6 +1,5 @@
 import axios, { AxiosError } from "axios";
 import HttpStatusCode from "../constants/httpStatusCode";
-import userImage from "src/assets/images/user.svg";
 import { ErrorResponse } from "../types/utils.type";
 import config from "../constants/config";
 
@@ -70,4 +69,4 @@ export const getIdFromNameId = (nameId: string) => {
 };
 
 export const getAvatarUrl = (avatarName?: string) =>
-  avatarName ? `${config.baseUrl}images/${avatarName}` : userImage;
+  avatarName ? `${config.baseUrl}images/${avatarName}` : null;

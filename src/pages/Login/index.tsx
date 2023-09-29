@@ -1,33 +1,41 @@
-import { useEffect, useState } from "react";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useMutation } from "@tanstack/react-query";
+import { useForm } from "react-hook-form";
+import authApi from "../../apis/auth.api";
 import WelcomeCard from "../../components/Cards/WelcomeCard";
 import PropertyTextInput from "../../components/Form/PropertyTextInput";
 import Preloader from "../../components/Loader";
+import { Schema, schema } from "../../utils/rules";
+type FormData = Pick<Schema, "username" | "password">;
+const registerSchema = schema.pick(["username", "password"]);
 
 function Login() {
-  const [input, setInput] = useState({
-    username: "",
-    password: "",
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>({
+    resolver: yupResolver(registerSchema),
   });
-  const handleChange = (e: any) => {
-    setInput({ ...input, [e.target.name]: e.target.value });
-  };
-  // loading handler
-  const [isLoading, setisLoadingg] = useState(true);
-  useEffect(() => {
-    setisLoadingg(false);
-  }, []);
+  const { mutate, isLoading } = useMutation({
+    mutationFn: (data: FormData) => authApi.login(data),
+  });
 
-  let component = undefined;
-  if (isLoading) {
-    component = <Preloader />;
-  } else {
-    component = (
-      <section
-        className="ecom-wc ecom-wc__full ecom-bg-cover"
-        // style={{ backgroundImage: "url('img/credential-bg.svg')" }}
-      >
-        <div className="container-fluid">
-          <div className="row">
+  const onSubmit = handleSubmit((data) => {
+    console.log(data);
+    mutate(data);
+  });
+
+  return (
+    <section
+      className="ecom-wc ecom-wc__full ecom-bg-cover"
+      // style={{ backgroundImage: "url('img/credential-bg.svg')" }}
+    >
+      <div className="container-fluid">
+        <div className="row">
+          {isLoading ? (
+            <Preloader />
+          ) : (
             <div className="col-lg-6 col-12">
               <div className="ecom-wc__form">
                 <div className="ecom-wc__form-inner">
@@ -43,21 +51,23 @@ function Login() {
                     className="ecom-wc__form-main p-0"
                     action="index.html"
                     method="post"
+                    onSubmit={onSubmit}
                   >
                     <PropertyTextInput
                       title="Username*"
                       name="username"
-                      value={input.username}
-                      handleChange={handleChange}
                       placeholder="demo3243@gmail.com"
+                      type="text"
+                      register={register}
+                      errorMessage={errors.username?.message}
                     />
                     <PropertyTextInput
                       title="Password*"
                       name="password"
-                      value={input.password}
-                      handleChange={handleChange}
                       placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;"
                       type="password"
+                      register={register}
+                      errorMessage={errors.password?.message}
                     />
                     <div className="form-group form-mg-top-30">
                       <div className="ecom-wc__button ecom-wc__button--bottom">
@@ -92,23 +102,22 @@ function Login() {
                 </div>
               </div>
             </div>
-            <WelcomeCard
-              languages={["English", "Bengali", "Frances"]}
-              links={[
-                { link: "#", name: "Terms & Condition" },
-                { link: "#", name: "Privacy Policy" },
-                { link: "#", name: "Help" },
-              ]}
-              image="https://placehold.co/600x600"
-              brunches="120"
-              builtHouse="150k"
-            />
-          </div>
+          )}
+          <WelcomeCard
+            languages={["English", "Bengali", "Frances"]}
+            links={[
+              { link: "#", name: "Terms & Condition" },
+              { link: "#", name: "Privacy Policy" },
+              { link: "#", name: "Help" },
+            ]}
+            image="https://placehold.co/600x600"
+            brunches="120"
+            builtHouse="150k"
+          />
         </div>
-      </section>
-    );
-  }
-  return component;
+      </div>
+    </section>
+  );
 }
 
 export default Login;

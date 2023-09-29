@@ -1,15 +1,28 @@
-import ProtoTypes from "prop-types";
+import type { RegisterOptions, UseFormRegister } from "react-hook-form";
+
+interface Props {
+  errorMessage?: string;
+  register: UseFormRegister<any>;
+  rules?: RegisterOptions;
+  name: string;
+  size?: string;
+  title: string;
+  margin?: string;
+  placeholder: string;
+  type: React.HTMLInputTypeAttribute;
+}
 
 function PropertyTextInput({
   size,
   title,
   name,
-  value,
-  handleChange,
   placeholder,
   type,
   margin,
-}: any) {
+  rules,
+  register,
+  errorMessage,
+}: Props) {
   return (
     <div className={`${size && size} col-12 `}>
       {/* Single Form Element */}
@@ -23,29 +36,20 @@ function PropertyTextInput({
         <div className="form-group homec-form-input">
           <input
             type={type ? type : "text"}
-            value={value}
-            name={name}
             placeholder={placeholder}
-            onChange={(e) => {
-              handleChange(e);
-            }}
-            required
+            {...register(name, rules)}
           />
+          <span
+            style={{
+              color: "red",
+            }}
+          >
+            {errorMessage}
+          </span>
         </div>
       </div>
     </div>
   );
 }
-
-PropertyTextInput.propTypes = {
-  size: ProtoTypes.string,
-  title: ProtoTypes.string,
-  name: ProtoTypes.string.isRequired,
-  value: ProtoTypes.string.isRequired,
-  handleChange: ProtoTypes.func.isRequired,
-  placeholder: ProtoTypes.string,
-  type: ProtoTypes.string,
-  margin: ProtoTypes.string,
-};
 
 export default PropertyTextInput;

@@ -34,12 +34,11 @@ export class Http {
       timeout: 10000,
       headers: {
         "Content-Type": "application/json",
-        "expire-access-token": 60 * 60 * 24, // 1 ngày
-        "expire-refresh-token": 60 * 60 * 24 * 160, // 160 ngày
       },
     });
     this.instance.interceptors.request.use(
       (config) => {
+        console.log(config);
         if (this.accessToken && config.headers) {
           config.headers.authorization = this.accessToken;
           return config;
@@ -56,8 +55,8 @@ export class Http {
         const { url } = response.config;
         if (url === URL_LOGIN || url === URL_REGISTER) {
           const data = response.data as AuthResponse;
-          this.accessToken = data.data.access_token;
-          this.refreshToken = data.data.refresh_token;
+          this.accessToken = data.data.accessToken;
+          this.refreshToken = data.data.refreshToken;
           setAccessTokenToLS(this.accessToken);
           setRefreshTokenToLS(this.refreshToken);
           setProfileToLS(data.data.user);

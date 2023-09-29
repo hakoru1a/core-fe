@@ -1,26 +1,26 @@
-import { useEffect, useState } from "react";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useForm } from "react-hook-form";
 import WelcomeCard from "../../components/Cards/WelcomeCard";
 import PropertyTextInput from "../../components/Form/PropertyTextInput";
 import Preloader from "../../components/Loader";
+import { Schema, schema } from "../../utils/rules";
+
+type FormData = Pick<Schema, "email" | "password" | "confirm_password">;
+const registerSchema = schema.pick(["email", "password", "confirm_password"]);
 
 function SignUp() {
-  const [input, setInput] = useState({
-    firstName: "",
-    lastName: "",
-    phoneNumber: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>({
+    resolver: yupResolver(registerSchema),
   });
-  const handleChange = (e: any) => {
-    setInput({ ...input, [e.target.name]: e.target.value });
-  };
+  const onSubmit = handleSubmit((data) => {
+    console.log(data);
+  });
 
-  // Loading Handle
-  const [isLoading, setisLoadingg] = useState(true);
-  useEffect(() => {
-    setisLoadingg(false);
-  }, []);
+  const isLoading = false;
 
   let component = undefined;
   if (isLoading) {
@@ -48,64 +48,18 @@ function SignUp() {
                     className="ecom-wc__form-main p-0  "
                     action="index.html"
                     method="post"
+                    onSubmit={onSubmit}
                   >
                     <div className="row">
                       <PropertyTextInput
                         size="col-lg-6 col-md-6"
-                        title="First Name*"
-                        name="firstName"
-                        value={input.firstName}
-                        handleChange={handleChange}
+                        title="Email*"
                         placeholder="Jhon"
                         margin="-10px"
-                      />
-                      <PropertyTextInput
-                        size="col-lg-6 col-md-6"
-                        title="Last Name*"
-                        name="lastName"
-                        value={input.lastName}
-                        handleChange={handleChange}
-                        placeholder="Doe"
-                        margin="-10px"
-                      />
-
-                      <PropertyTextInput
-                        size="col-lg-6 col-md-6"
-                        title="Phone Number*"
-                        name="phoneNumber"
-                        value={input.phoneNumber}
-                        handleChange={handleChange}
-                        placeholder="+884401895493"
-                        margin="-10px"
-                      />
-                      <PropertyTextInput
-                        size="col-lg-6 col-md-6"
-                        title="Email Address*"
                         name="email"
-                        value={input.email}
-                        handleChange={handleChange}
-                        placeholder="demo3243@gmail.com"
-                        margin="-10px"
-                      />
-                      <PropertyTextInput
-                        size="col-lg-6 col-md-6"
-                        title="Password*"
-                        name="password"
-                        value={input.password}
-                        handleChange={handleChange}
-                        placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;"
-                        type="password"
-                        margin="-10px"
-                      />
-                      <PropertyTextInput
-                        size="col-lg-6 col-md-6"
-                        title="Confirm Password*"
-                        name="confirmPassword"
-                        value={input.confirmPassword}
-                        handleChange={handleChange}
-                        placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;"
-                        type="password"
-                        margin="-10px"
+                        register={register}
+                        type="email"
+                        errorMessage={errors.email?.message}
                       />
                     </div>
                     <div className="form-group form-mg-top-30">
