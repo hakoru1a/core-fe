@@ -7,7 +7,7 @@ function Footer() {
     <footer className="footer-area p-relative">
       <div className="homec-shape">
         <div className="homec-shape-single homec-shape-10">
-          <img src="img/anim-shape-6.svg" alt="#" />
+          <img src="/img/anim-shape-6.svg" alt="#" />
         </div>
       </div>
       <div className="container">
@@ -27,7 +27,7 @@ function Footer() {
                   <div className="footer-about-widget">
                     <div className="footer-logo homec-header__logo">
                       <Link className="logo" to="/">
-                        <img src="img/logo-footer.png" alt="#" />
+                        <img src="/img//logo-footer.png" alt="#" />
                       </Link>
                     </div>
                     <p className="footer-about-text">
@@ -161,17 +161,17 @@ function Footer() {
                         <div className="f-contact__form-top">
                           <ul className="f-contact-list list-none">
                             <li>
-                              <img src="img/footer-phone.svg" alt="#" />
+                              <img src="/img/footer-phone.svg" alt="#" />
                               <a href="tel:+(323)750-1234">+(323) 750-1234</a>
                             </li>
                             <li>
-                              <img src="img/footer-message.png" alt="#" />
+                              <img src="/img/footer-message.png" alt="#" />
                               <a href="mailto:infoyour@gmail.com">
                                 infoyour@gmail.com
                               </a>
                             </li>
                             <li>
-                              <img src="img/footer-location.png" alt="#" />
+                              <img src="/img/footer-location.png" alt="#" />
                               <p>374 FA Tower, William S Blvd 2721, IL, USA</p>
                             </li>
                           </ul>

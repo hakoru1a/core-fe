@@ -9,7 +9,7 @@ function UploadedImageCard({ img, handleDelete }: any) {
           className="homec-upload-images__single--edit"
           onClick={() => handleDelete(img.id)}
         >
-          <img src="img/delete-icon.svg" />
+          <img src="/img/delete-icon.svg" />
         </button>
       </div>
     </div>

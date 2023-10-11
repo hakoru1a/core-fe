@@ -1,39 +1,22 @@
-import SelectiveInput from "../Form/SelectiveInput";
+import { cites, propertyType } from "../../data/property";
+import AgentsSidebarSlider from "../Agents/AgentsSidebarSlider";
 import CheckInput from "../Form/CheckInput";
 import RangeInput from "../Form/RangeInput";
-import AgentsSidebarSlider from "../Agents/AgentsSidebarSlider";
-
+import SelectiveInputSearch from "../Form/SelectiveInputSearch";
 function index() {
   return (
     <div className="col-lg-4 col-12 mg-top-30">
       <div className="property-sidebar">
-        <SelectiveInput
-          title="Country"
-          options={[
-            { id: 1, name: "Bangladesh" },
-            { id: 2, name: "United Kingdom" },
-            { id: 3, name: "United State" },
-          ]}
-        />
-        <SelectiveInput
-          title="City"
-          options={[
-            { id: 1, name: "Dhaka City" },
-            { id: 2, name: "Chittagong" },
-            { id: 3, name: "Sylhet" },
-            { id: 4, name: "Khulna" },
-            { id: 5, name: "Rajshahi" },
-          ]}
-          classes="mg-top-20"
-        />
-        <SelectiveInput
+        <SelectiveInputSearch
           title="Property Category"
-          options={[
-            { id: 1, name: "Apartment" },
-            { id: 2, name: "Family House" },
-            { id: 3, name: "Modern Villa" },
-          ]}
+          options={propertyType}
+          name="propertyType"
+        />
+        <SelectiveInputSearch
+          title="City"
+          options={cites}
           classes="mg-top-20"
+          name="city"
         />
         <CheckInput
           title="Number Of Rooms"

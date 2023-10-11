@@ -1,9 +1,15 @@
 import ProtoTypes from "prop-types";
+import { Link } from "react-router-dom";
 
-function HistoryLinks({ link, text, isActive }: any) {
+interface Props {
+  link: string;
+  text: string;
+  isActive?: boolean;
+}
+function HistoryLinks({ link, text, isActive }: Props) {
   return (
-    <li className={isActive && "active"}>
-      <a href={link}>{text}</a>
+    <li className={isActive ? "active" : ""}>
+      <Link to={link}>{text}</Link>
     </li>
   );
 }

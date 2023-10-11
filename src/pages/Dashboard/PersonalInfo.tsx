@@ -1,10 +1,47 @@
 import { useState } from "react";
 import UpdatePersonalInfo from "../../components/Modal/updatePersonalInfo";
+import { useAuth } from "../../hooks/useAuth";
+import { useMutation } from "@tanstack/react-query";
+import userApi from "../../apis/user.api";
+import { toast } from "react-toastify";
+import { setProfileToLS } from "../../utils/auth";
+import { useDispatch } from "react-redux";
+import { setGlobalUser } from "../../redux/slice/user.slice";
+import Preloader from "../../components/Loader";
 
 function PersonalInfo() {
+  const user = useAuth();
   const [modalOpen, setModalOpen] = useState(false);
   const toggleModal = () => {
     setModalOpen(!modalOpen);
+  };
+  const [avatarFile, setAvatarFile] = useState<File | null>();
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const dispatch = useDispatch();
+  const { mutate, isLoading } = useMutation({
+    mutationFn: (file: File) => userApi.changeAvatar(file, user.id),
+    onSuccess: (res) => {
+      const { data } = res;
+      setProfileToLS(data.data);
+      dispatch(setGlobalUser(data.data));
+    },
+    onError: () => {
+      toast.error("Chưa thể chỉnh sửa ảnh ngay bây giờ");
+    },
+  });
+  const handleSubmit = () => {
+    console.log(avatarFile);
+    if (avatarFile === undefined) {
+      toast.error("Ảnh chưa được chọn");
+    } else avatarFile && mutate(avatarFile);
+  };
+  const handleUpdateAvatar = (files: FileList | null) => {
+    const file = files && files[0];
+    setAvatarFile(file);
+    if (file) {
+      const url = URL.createObjectURL(file);
+      setAvatarUrl(url);
+    }
   };
   return (
     <div className="col-lg-9 col-md-8 col-12 mg-top-30">
@@ -17,25 +54,67 @@ function PersonalInfo() {
           />
           <div className="col-lg-6 col-12">
             <div className="homec-agent-detail__img">
-              <img src="https://placehold.co/360x390" alt="#" />
+              <label
+                htmlFor="avatar"
+                style={{
+                  position: "relative",
+                }}
+              >
+                {isLoading ? (
+                  <Preloader />
+                ) : (
+                  <img
+                    style={{
+                      widows: "360px",
+                      height: "390px",
+                      objectFit: "cover",
+                    }}
+                    src={
+                      avatarUrl || user.avatar || "https://placehold.co/360x390"
+                    }
+                    alt="#"
+                  />
+                )}
+                <button
+                  type="button"
+                  style={{
+                    position: "absolute",
+                    bottom: "0",
+                    right: "50%",
+                    transform: "translate(50%, -100%)",
+                    fontSize: "12px",
+                  }}
+                  className="btn btn-info"
+                  onClick={handleSubmit}
+                >
+                  Update image
+                </button>
+              </label>
             </div>
+            <input
+              id="avatar"
+              type="file"
+              style={{ display: "none" }}
+              accept="image/png, image/gif, image/jpeg"
+              onChange={(e) => handleUpdateAvatar(e.target.files)}
+            />
           </div>
           <div className="col-lg-6 col-12">
             <div className="homec-agent-detail__body">
-              <h3 className="homec-agent-detail__title">Wade De Warren</h3>
-              <p>Real Estate Broker</p>
+              <h3 className="homec-agent-detail__title">{user.fullname}</h3>
+              <p>Customer</p>
             </div>
             <ul className="homec-agent-detail__list mg-top-30">
               <li>
-                <img src="img/agent-phone.svg" alt="#" /> +0938 4937 23
+                <img src="/img/agent-phone.svg" alt="#" /> {user.phone}
               </li>
               <li>
-                <img src="img/agent-email.svg" alt="#" />{" "}
-                <a href="mailto:youremailad@gmail.com">Youremailad@gmail.com</a>
+                <img src="/img/agent-email.svg" alt="#" />{" "}
+                <a href="mailto:youremailad@gmail.com">{user.email}</a>
               </li>
               <li>
-                <img src="img/agent-location.svg" alt="#" /> 2972 Westheimer Rd.
-                Santa Ana, Illinois 85486{" "}
+                <img src="/img/agent-location.svg" alt="#" />{" "}
+                {user.address || "Vui lòng cập nhật địa chỉ sớm!"}
               </li>
             </ul>
             <ul className="homec-agent__social homec-agent__social--inline list-none mg-top-30">
@@ -106,12 +185,7 @@ function PersonalInfo() {
           <div className="homec-agent-detail__sticky--heading">
             <h2 className="homec-agent-detail__sticky--title">About Me</h2>
           </div>
-          <p className="homec-agent-detail__sticky--text">
-            There are many variations of passages of Lorem Ipsum available, but
-            the majority to have suffered alteration in some form, by injected
-            humor. Ipsum available, but the a majority have suffered alteration
-            in some form.
-          </p>
+          <p className="homec-agent-detail__sticky--text">{user.about}</p>
         </div>
       </div>
       <div className="row mg-top-30">

@@ -14,7 +14,7 @@ function AgentsV2() {
       <div className="homec-overlay"></div>
       <div
         className="section-inside-bg"
-        style={{ backgroundImage: "url('img/agent-bg-2.jpg')" }}
+        style={{ backgroundImage: "url('/img/agent-bg-2.jpg')" }}
       ></div>
       <div className="container">
         <div className="row">

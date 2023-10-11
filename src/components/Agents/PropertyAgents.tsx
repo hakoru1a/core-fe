@@ -16,7 +16,7 @@ function PropertyAgents({ image, name, position }: any) {
       {/*  Property Agent Card  */}
       <div
         className="homec-property-ag homec-property-ag--side homec-bg-cover"
-        style={{ backgroundImage: "url('img/property-ag-bg.svg')" }}
+        style={{ backgroundImage: "url('/img/property-ag-bg.svg')" }}
       >
         <h3 className="homec-property-ag__title">Property Agent</h3>
         {/*  Property Profile  */}

@@ -100,8 +100,8 @@ function KeyValueInputField({
               <img
                 src={
                   btnType === "add"
-                    ? "img/plus-icon.svg"
-                    : "img/delete-icon.svg"
+                    ? "/img/plus-icon.svg"
+                    : "/img/delete-icon.svg"
                 }
               />
             </button>

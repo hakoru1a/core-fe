@@ -6,7 +6,7 @@ function Features() {
     <section className="homec-bg-primary-color pd-top-110 pd-btm-110">
       <div
         className="homec-bg homec-bg__opacity"
-        style={{ backgroundImage: "url(img/features-list-bg.svg)" }}
+        style={{ backgroundImage: "url(/img/features-list-bg.svg)" }}
       ></div>
       <div className="container">
         <div className="row">
@@ -23,25 +23,25 @@ function Features() {
             <div className="homec-features-list">
               {/* Features Single */}
               <FeaturesCardV2
-                icon="img/hand-icon.svg"
+                icon="/img/hand-icon.svg"
                 serial="01"
                 title="Trusted"
                 text="believe in our service & Care"
               />
               <FeaturesCardV2
-                icon="img/support-icon.svg"
+                icon="/img/support-icon.svg"
                 serial="02"
                 title="24/7 Support"
                 text="believe in our service & Care"
               />
               <FeaturesCardV2
-                icon="img/finance-icon.svg"
+                icon="/img/finance-icon.svg"
                 serial="03"
                 title="Financing Easy"
                 text="believe in our service & Care"
               />
               <FeaturesCardV2
-                icon="img/wide-house-icon.svg"
+                icon="/img/wide-house-icon.svg"
                 serial="04"
                 title="Wide Range House"
                 text="believe in our service & Care"

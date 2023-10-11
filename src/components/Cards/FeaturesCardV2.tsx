@@ -15,7 +15,7 @@ function FeaturesCardV2({ icon, serial, title, text }: any) {
           </div>
         </div>
         <div className="homec-features-list__arrow homec-features-list__arrow--one">
-          <img src="img/arrow-icon.svg" alt="#" />
+          <img src="/img/arrow-icon.svg" alt="#" />
         </div>
       </div>
       <div className="homec-features-list__body">

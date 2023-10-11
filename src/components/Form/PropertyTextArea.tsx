@@ -20,7 +20,7 @@ function PropertyTextArea({ title, name, handleChange }: any) {
         <CKEditor
           editor={ClassicEditor}
           data={input.value}
-          onChange={(editor: any) => {
+          onChange={(event: any, editor: any) => {
             const data = editor.getData();
             setInput({ ...input, value: data });
           }}

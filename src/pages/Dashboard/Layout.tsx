@@ -1,6 +1,9 @@
-import ProtoTypes from "prop-types";
+interface Props {
+  title: string;
+  children: React.ReactNode;
+}
 
-function Layout({ title, children }: any) {
+function Layout({ title, children }: Props) {
   return (
     <div className="col-lg-9 col-md-8 col-12 mg-top-30">
       <div className="homec-dashboard__inner homec-border">
@@ -10,10 +13,5 @@ function Layout({ title, children }: any) {
     </div>
   );
 }
-
-Layout.propTypes = {
-  title: ProtoTypes.string.isRequired,
-  children: ProtoTypes.node.isRequired,
-};
 
 export default Layout;

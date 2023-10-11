@@ -1,18 +1,16 @@
-import ProtoTypes from "prop-types";
-
-function ShowingResult({ currentPage, totalPages }: any) {
+interface Props {
+  currentPage?: number;
+  totalPages?: number;
+}
+function ShowingResult({ currentPage, totalPages }: Props) {
   return (
     <div className="hoemc-showing-results">
       <p className="hoemc-showing-results__text">
-        Showing <span>{currentPage}</span> of <span>{totalPages}</span> results
+        Showing <span>{currentPage}</span> of <span>{totalPages}</span> page
+        results
       </p>
     </div>
   );
 }
-
-ShowingResult.propTypes = {
-  currentPage: ProtoTypes.string.isRequired || ProtoTypes.number.isRequired,
-  totalPages: ProtoTypes.string.isRequired,
-};
 
 export default ShowingResult;

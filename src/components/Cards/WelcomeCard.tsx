@@ -1,24 +1,25 @@
 import ProtoTypes from "prop-types";
+import { Link } from "react-router-dom";
 
 function WelcomeCard({ languages, links, image, brunches, builtHouse }: any) {
   return (
     <div className="col-lg-6 col-12 d-none d-lg-block ">
       <div
         className="ecom-wc__inner homec-bg-cover"
-        style={{ backgroundImage: "url('img/welcome-bg.svg')" }}
+        style={{ backgroundImage: "url('/img/welcome-bg.svg')" }}
       >
         {/* Logo  */}
         <div className="ecom-wc__logo">
-          <a href="/">
-            <img src="img/welcome-logo.png" alt="#" />
-          </a>
+          <Link to="/">
+            <img src="/img/welcome-logo.png" alt="#" />
+          </Link>
         </div>
         <div className="ecom-wc__inside">
           {/* Middle Image  */}
           <div className="ecom-wc__middle">
-            <a href="/">
+            <Link to="/">
               <img src={image} alt="#" />
-            </a>
+            </Link>
             <div className="ecom-wc__countdown--title">
               {brunches}
               <span>Brunches</span>
@@ -32,7 +33,7 @@ function WelcomeCard({ languages, links, image, brunches, builtHouse }: any) {
             <ul className="ecom-wc__footer--list list-none">
               {links?.map((link: any) => (
                 <li key={link.name}>
-                  <a href={link.link}>{link.name}</a>
+                  <Link to={link.link}>{link.name}</Link>
                 </li>
               ))}
             </ul>

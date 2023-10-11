@@ -1,3 +1,4 @@
+import { RegisterForm } from "../pages/SignUp";
 import { AuthResponse } from "../types/auth.type";
 import http from "../utils/http";
 
@@ -13,6 +14,9 @@ export interface Credential {
 
 const authApi = {
   login: (credential: Credential) =>
-    http.post<AuthResponse>(URL_LOGIN, credential),
+    http.post<AuthResponse>("/authenticate/", credential),
+  register: (registerData: RegisterForm) =>
+    http.post("/api/customers/", registerData),
+  activeAccount: (id: string | undefined) => http.get(`/api/customers/${id}/`),
 };
 export default authApi;

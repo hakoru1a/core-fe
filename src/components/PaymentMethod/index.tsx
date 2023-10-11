@@ -25,7 +25,7 @@ function PaymentMethod() {
         <Breadcrumbs
           title="Payment Method"
           titlePosition="bottom"
-          background="url(img/bread-overlay.jpg)"
+          background="url(/img/bread-overlay.jpg)"
         >
           <HistoryLinks link="home" text="Home" />
           <HistoryLinks
@@ -36,7 +36,7 @@ function PaymentMethod() {
         </Breadcrumbs>
         <section
           className="pd-top-80 pd-btm-80"
-          style={{ backgroundImage: "url('img/payment-bg.png')" }}
+          style={{ backgroundImage: "url('/img/payment-bg.png')" }}
         >
           <div className="container">
             <div className="row">

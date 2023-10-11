@@ -25,23 +25,19 @@ function Comment() {
             <PropertyTextInput
               size="col-lg-6 col-md-6"
               name="name"
-              value={input.name}
-              handleChange={handleChange}
               placeholder="Abdullah Mamun"
             />
             <PropertyTextInput
               size="col-lg-6 col-md-6"
               name="email"
-              value={input.email}
-              handleChange={handleChange}
               placeholder="Your Email"
             />
             <PropertyTextAreaV2
-              value={input.message}
-              handleChange={handleChange}
               name="message"
               placeHolder="Message Here"
               sizeFull={true}
+              handleChange={() => {}}
+              value="abc"
             />
             <div className="col-12 d-flex justify-content-end mg-top-20">
               <button type="submit" className="homec-btn homec-btn__second">

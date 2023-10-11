@@ -65,7 +65,7 @@ function PropertyPlanVideo({
               onClick={() => handleDelete("delete", id, "propertyPlan")}
               className="homec-form-add__button homec-form-add__button--delete"
             >
-              <img src="img/delete-icon.svg" />
+              <img src="/img/delete-icon.svg" />
             </button>
           </div>
         </div>

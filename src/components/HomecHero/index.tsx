@@ -6,7 +6,7 @@ function HomecHero() {
     <section
       id="hero"
       className="homec-hero homec-hero__v2 p-relative"
-      style={{ backgroundImage: "url('img/map.svg')" }}
+      style={{ backgroundImage: "url('/img/map.svg')" }}
     >
       <div className="container">
         <div className="row align-items-center">

@@ -12,14 +12,15 @@ import Footer from "../../components/Footer";
 import GoTopBtn from "../../components/Button/GoTopBtn";
 import Blog from "../Blog";
 import FaqSection from "../Faq/FaqSection";
+import TimeTable from "../../components/Form/TimeTable";
 
 function Home() {
   const [isLoading, setisLoadingg] = useState(true);
 
-  console.log(import.meta.env);
-
   useEffect(() => {
-    setisLoadingg(false);
+    setTimeout(() => {
+      setisLoadingg(false);
+    }, 1000);
   }, []);
 
   let component = undefined;
@@ -39,6 +40,7 @@ function Home() {
         <DownloadApp />
         <Blog />
         <Footer />
+        <TimeTable />
         <GoTopBtn />
       </>
     );

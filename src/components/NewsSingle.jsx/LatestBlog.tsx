@@ -15,7 +15,7 @@ function LatestBlog({ posts }: any) {
               <a href={post.link}>{post.title}</a>
             </h5>
             <div className="homec-sidebar__content--date">
-              <img src="img/calendar.svg" alt="#" />
+              <img src="/img/calendar.svg" alt="#" />
               {post.date}
             </div>
           </div>

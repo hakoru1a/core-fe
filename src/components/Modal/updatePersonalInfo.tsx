@@ -42,7 +42,7 @@ function UpdatePersonalInfo({ isModalOpen, toggleModal }: any) {
               </span>
             </h3>
             {/* Sign in Form  */}
-            <PersonalInfo />
+            <PersonalInfo toggleModal={toggleModal} />
             {/* End Sign in Form */}
           </div>
         </div>

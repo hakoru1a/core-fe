@@ -32,7 +32,7 @@ function PropertyVideoInput({ handleVideoInput, video }: any) {
                   className="homec-image-video-upload__label"
                   htmlFor="input-video1"
                 >
-                  <img src="img/upload-file-2.svg" alt="#" />
+                  <img src="/img/upload-file-2.svg" alt="#" />
                   <span className="homec-image-video-upload__title homec-image-video-upload__title--v2">
                     Drag & Drop or{" "}
                     <span className="homec-primary-color">Choose File</span> to
@@ -47,7 +47,7 @@ function PropertyVideoInput({ handleVideoInput, video }: any) {
               <div className="form-group homec-form-input">
                 <textarea
                   name="description"
-                  required
+                  // required
                   onChange={(e) => handleVideoInput(e)}
                   value={video.description}
                 ></textarea>

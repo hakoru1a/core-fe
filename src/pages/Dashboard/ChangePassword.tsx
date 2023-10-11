@@ -1,13 +1,50 @@
-import { useState } from "react";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useForm } from "react-hook-form";
+import PropertyTextInput from "../../components/Form/PropertyTextInput";
+import { ChangePasswordType } from "../../types/user.type";
+import { Schema, schema } from "../../utils/rules";
+import { useMutation } from "@tanstack/react-query";
+import userApi from "../../apis/user.api";
+import { useAuth } from "../../hooks/useAuth";
+import Preloader from "../../components/Loader";
+import { toast } from "react-toastify";
+
+export type FormData = Pick<
+  Schema,
+  "password" | "confirm_password" | "previousPassword"
+>;
+const changePasswordSchema = schema.pick([
+  "password",
+  "confirm_password",
+  "previousPassword",
+]);
 
 function ChangePassword() {
-  const [input, setInput] = useState({
-    password: "",
-    confirmPassword: "",
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>({
+    resolver: yupResolver(changePasswordSchema),
   });
-  const handleChange = (e: any) => {
-    setInput({ ...input, [e.target.name]: e.target.value });
-  };
+  const user = useAuth();
+  const { mutate, isLoading } = useMutation({
+    mutationFn: (data: ChangePasswordType) =>
+      userApi.chagePassword(data, user.id),
+    onSuccess: () => {
+      toast.success("Cập nhật mật khẩu thành công");
+    },
+  });
+  const onSubmit = handleSubmit((data) => {
+    const myData: ChangePasswordType = {
+      currentPassword: data.password,
+      previousPassword: data.previousPassword,
+    };
+    mutate(myData);
+  });
+  if (isLoading) {
+    return <Preloader />;
+  }
   return (
     <div className="col-lg-9 col-md-8 col-12 mg-top-30">
       <div className="homec-dashboard__inner homec-border">
@@ -25,44 +62,51 @@ function ChangePassword() {
               className="ecom-wc__form-main p-0"
               action="index.html"
               method="post"
+              onSubmit={onSubmit}
+              noValidate
             >
               <div className="row">
                 <div className="col-12">
                   <div className="form-group homec-form-input">
-                    <label className="ecom-wc__form-label mg-btm-10">
-                      Password*
-                    </label>
                     <div className="form-group__input">
-                      <input
-                        className="ecom-wc__form-input"
-                        placeholder="●●●●●●"
-                        id="password-field"
+                      <PropertyTextInput
+                        title="Pre-Password*"
+                        margin="-10px"
+                        name="previousPassword"
+                        placeholder="********"
+                        register={register}
                         type="password"
-                        name="password"
-                        maxLength={8}
-                        required={true}
-                        value={input.password}
-                        onChange={(e) => handleChange(e)}
+                        errorMessage={errors.previousPassword?.message}
                       />
                     </div>
                   </div>
                 </div>
                 <div className="col-12">
                   <div className="form-group homec-form-input">
-                    <label className="ecom-wc__form-label mg-btm-10">
-                      Confirm Password*
-                    </label>
                     <div className="form-group__input">
-                      <input
-                        className="ecom-wc__form-input"
-                        placeholder="●●●●●●"
-                        id="confirm-password-field"
+                      <PropertyTextInput
+                        title="Password*"
+                        margin="-10px"
+                        name="password"
+                        placeholder="********"
+                        register={register}
                         type="password"
-                        name="confirmPassword"
-                        maxLength={8}
-                        required={true}
-                        value={input.confirmPassword}
-                        onChange={(e) => handleChange(e)}
+                        errorMessage={errors.password?.message}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="col-12">
+                  <div className="form-group homec-form-input">
+                    <div className="form-group__input">
+                      <PropertyTextInput
+                        title="Confirm Pasword*"
+                        placeholder="********"
+                        margin="-10px"
+                        name="confirm_password"
+                        register={register}
+                        type="password"
+                        errorMessage={errors.confirm_password?.message}
                       />
                     </div>
                   </div>

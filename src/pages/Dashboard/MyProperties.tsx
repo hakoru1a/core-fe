@@ -1,46 +1,38 @@
-import Layout from "./Layout";
+import { useQuery } from "@tanstack/react-query";
+import propertyApi from "../../apis/property.api";
 import DashboardPropertyCard from "../../components/Cards/DashboardPropertyCard";
-import Pagination from "../../components/Pagination";
-import { useState } from "react";
-import properties from "../../data/property";
+import Preloader from "../../components/Loader";
+import { useAuth } from "../../hooks/useAuth";
+import Layout from "./Layout";
 
 function MyProperties() {
-  const [currentPage, setCurrentPage] = useState(1);
-  const totalPage = 24;
+  const user = useAuth();
 
-  const handelPage = (page) => {
-    if (page === "prev") {
-      if (currentPage > 1) {
-        setCurrentPage(currentPage - 1);
-      }
-    } else if (page === "next") {
-      if (currentPage < totalPage) {
-        setCurrentPage(currentPage + 1);
-      }
-    } else {
-      setCurrentPage(page);
-    }
-  };
+  const { data, isFetching } = useQuery({
+    queryFn: () => propertyApi.getMyProperies(user.id),
+    queryKey: ["properties", "my-property"],
+  });
+  console.log(data);
+
+  if (isFetching) {
+    return <Preloader />;
+  }
   return (
     <>
       <Layout title="My Properties">
-        {properties?.map((property) => (
+        {data?.data.data?.map((property) => (
           <DashboardPropertyCard
             key={property.id}
-            status={property.status}
-            image={property.img2}
-            why={property.whatFor}
-            title={property.name}
+            id={property.id}
+            status={property.isActive ? "Active" : "DEACTIVE"}
+            image="https://placehold.co/164x164"
+            why={property.purpose}
+            title={property.propertyName}
             location={property.address}
-            rating={property.rating}
-            totalRating={property.totalRating}
+            rating={5}
+            totalRating={10}
           />
         ))}
-        <Pagination
-          totalPage={totalPage}
-          currentPage={currentPage}
-          handlePage={handelPage}
-        />
       </Layout>
     </>
   );

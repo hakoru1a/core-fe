@@ -23,7 +23,7 @@ const handleConfirmPasswordYup = (refString: string) => {
 export const schema = yup.object({
   username: yup
     .string()
-    .required()
+    .required("Username là bắt buộc")
     .min(5, "Độ dài từ 5 - 160 ký tự")
     .max(160, "Độ dài từ 5 - 160 ký tự"),
   email: yup
@@ -32,6 +32,11 @@ export const schema = yup.object({
     .email("Email không đúng định dạng")
     .min(5, "Độ dài từ 5 - 160 ký tự")
     .max(160, "Độ dài từ 5 - 160 ký tự"),
+  previousPassword: yup
+    .string()
+    .required("Password là bắt buộc")
+    .min(6, "Độ dài từ 6 - 160 ký tự")
+    .max(160, "Độ dài từ 6 - 160 ký tự"),
   password: yup
     .string()
     .required("Password là bắt buộc")
@@ -48,12 +53,21 @@ export const schema = yup.object({
     message: "Giá không phù hợp",
     test: testPriceMinMax,
   }),
-  name: yup.string().trim().required("Tên sản phẩm là bắt buộc"),
 });
 
 export const userSchema = yup.object({
-  name: yup.string().max(160, "Độ dài tối đa là 160 ký tự"),
-  phone: yup.string().max(20, "Độ dài tối đa là 20 ký tự"),
+  fullname: yup
+    .string()
+    .required("Fullname là bắt buộc")
+    .max(160, "Độ dài tối đa là 160 ký tự"),
+  phone: yup
+    .string()
+    .required("Phone là bắt buộc")
+    .matches(
+      /(84|0[3|5|7|8|9])+([0-9]{8})\b/g,
+      "Định dạng số điện thoại không đúng"
+    )
+    .max(20, "Độ dài tối đa là 20 ký tự"),
   address: yup.string().max(160, "Độ dài tối đa là 160 ký tự"),
   avatar: yup.string().max(1000, "Độ dài tối đa là 1000 ký tự"),
   date_of_birth: yup.date().max(new Date(), "Hãy chọn một ngày trong quá khứ"),
@@ -74,6 +88,54 @@ export const userSchema = yup.object({
   ) as yup.StringSchema<string | undefined, yup.AnyObject, undefined, "">,
 });
 
-export type UserSchema = yup.InferType<typeof userSchema>;
+export const propertySchema = yup.object({
+  propertyName: yup
+    .string()
+    .required("Property name là bắt buộc")
+    .max(160, "Độ dài tối đa là 160 ký tự"),
+  description: yup.string(),
+  propertyType: yup.string().required("Giá tiền của property là bắt buộc"),
+  rentPeriod: yup.string().required("Khoảng thời gian thuê bắt buộc"),
+  area: yup.string().required("Diện tích bắt buộc"),
+  bed: yup.string().required("Số phòng ngủ bắt buộc"),
+  bath: yup.string().required("Số phòng nhà vệ sinh bắt buộc"),
+  garage: yup.string().required("Số bãi đổ bắt buộc"),
+  kitchen: yup.string().required("Số nhà bếp bắt buộc"),
+  price: yup.string().required("Giá tiền của property là bắt buộc"),
+  thumbs: yup
+    .mixed()
+    .test("fileCount", "You must upload exactly 3 files", (value) => {
+      if (!value) return false; // Nếu value là undefined hoặc null, trả về false
+      if (!(value instanceof FileList)) {
+        // Nếu value không phải là một đối tượng FileList, trả về false
+        return false;
+      }
+      return value.length === 3;
+    }),
 
+  // imageDetails: yup
+  //   .mixed()
+  //   .test("fileCount", "You must upload exactly 10 files", (value) => {
+  //     if (!value) return false; // Nếu value là undefined hoặc null, trả về false
+  //     if (!(value instanceof FileList)) {
+  //       // Nếu value không phải là một đối tượng FileList, trả về false
+  //       return false;
+  //     }
+  //     return value.length === 10;
+  //   }),
+  // documents: yup.mixed().required("Documents bắt buộc"),
+  // video: yup
+  //   .mixed()
+  //   .test("fileCount", "You must upload exactly 1 video", (value) => {
+  //     if (!value) return false; // Nếu value là undefined hoặc null, trả về false
+  //     if (!(value instanceof FileList)) {
+  //       // Nếu value không phải là một đối tượng FileList, trả về false
+  //       return false;
+  //     }
+  //     return value.length === 1;
+  //   }),
+});
+
+export type UserSchema = yup.InferType<typeof userSchema>;
+export type PropertySchema = yup.InferType<typeof propertySchema>;
 export type Schema = yup.InferType<typeof schema>;

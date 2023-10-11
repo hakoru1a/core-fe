@@ -1,60 +1,142 @@
-import { useState } from "react";
-import PropertyTextInput from "./PropertyTextInput";
-import PropertyTextAreaV2 from "./PropertyTextAreaV2";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useMutation } from "@tanstack/react-query";
+import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
+import userApi from "../../apis/user.api";
+import PropertyTextInputV2 from "../../components/Form/PropertyTextInputV2";
+import { useAuth } from "../../hooks/useAuth";
+import { setGlobalUser } from "../../redux/slice/user.slice";
+import { User } from "../../types/user.type";
+import { setProfileToLS } from "../../utils/auth";
+import { Schema, UserSchema, schema, userSchema } from "../../utils/rules";
+import Preloader from "../Loader";
+import PropertyTextAreaV3 from "./PropertyTextAreaV3";
+export type FormData = Pick<Schema, "email"> &
+  Pick<UserSchema, "fullname" | "phone" | "address">;
+const registerSchema = schema.pick(["email"]);
+const us = userSchema.pick(["fullname", "phone", "address"]);
+const combinedSchema = registerSchema.concat(us);
 
-function PersonalInfo() {
-  const [input, setInput] = useState({
-    image: "",
-    firstName: "",
-    lastName: "",
-    phoneNumber: "",
-    emailAddress: "",
-    location: "",
-    aboutText: "",
-    facebook: "",
-    twitter: "",
-    instagram: "",
-    linkedin: "",
+interface Props {
+  toggleModal: () => void;
+}
+
+function PersonalInfo({ toggleModal }: Props) {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>({
+    resolver: yupResolver(combinedSchema),
   });
-  const handleChange = (e: any) => {
-    setInput({ ...input, [e?.target?.name]: e?.target?.value });
-  };
+  const user = useAuth();
+  const dispatch = useDispatch();
+  const { mutate, isLoading } = useMutation({
+    mutationFn: (user: User) => userApi.updateCurrentUser(user),
+    onSuccess: (res) => {
+      const { data } = res;
+      setProfileToLS(data.data);
+      dispatch(setGlobalUser(data.data));
+      toggleModal();
+      toast.success("Update profile thành công");
+    },
+  });
+  const onSubmit = handleSubmit((data) => {
+    const updateData = {
+      ...user,
+      ...data,
+    };
+    mutate(updateData);
+    // fetch("http://localhost:8080/api/customers/update-profile/", {
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   method: "put",
+    //   body: JSON.stringify(updateData),
+    // });
+  });
+  if (isLoading) {
+    return <Preloader />;
+  }
   return (
-    <form className="ecom-wc__form-main p-0" action="index.html" method="post">
+    <form
+      className="ecom-wc__form-main p-0"
+      action="index.html"
+      method="post"
+      onSubmit={onSubmit}
+      noValidate
+    >
       <div className="row">
-        <div className="col-12">
-          <div className="homec-profile__edit mg-top-20">
-            <img src="https://placehold.co/90x90" alt="#" />
-            <label htmlFor="file-input">
-              <span className="homec-pimg">
-                <svg
-                  viewBox="0 0 32 32"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M16.5147 11.5C17.7284 12.7137 18.9234 13.9087 20.1296 15.115C19.9798 15.2611 19.8187 15.4109 19.6651 15.5683C17.4699 17.7635 15.271 19.9587 13.0758 22.1539C12.9334 22.2962 12.7948 22.4386 12.6524 22.5735C12.6187 22.6034 12.5663 22.6296 12.5213 22.6296C11.3788 22.6334 10.2362 22.6297 9.09365 22.6334C9.01498 22.6334 9 22.6034 9 22.536C9 21.4009 9 20.2621 9.00375 19.1271C9.00375 19.0746 9.02997 19.0109 9.06368 18.9772C10.4123 17.6249 11.7609 16.2763 13.1095 14.9277C14.2295 13.8076 15.3459 12.6913 16.466 11.5712C16.4884 11.5487 16.4997 11.5187 16.5147 11.5Z"
-                    fill="white"
-                  ></path>
-                  <path
-                    d="M20.9499 14.2904C19.7436 13.0842 18.5449 11.8854 17.3499 10.6904C17.5634 10.4694 17.7844 10.2446 18.0054 10.0199C18.2639 9.76139 18.5261 9.50291 18.7884 9.24443C19.118 8.91852 19.5713 8.91852 19.8972 9.24443C20.7251 10.0611 21.5492 10.8815 22.3771 11.6981C22.6993 12.0165 22.7105 12.4698 22.3996 12.792C21.9238 13.2865 21.4443 13.7772 20.9686 14.2717C20.9648 14.2792 20.9536 14.2867 20.9499 14.2904Z"
-                    fill="white"
-                  ></path>
-                </svg>
-              </span>
-            </label>
-            <input
-              id="file-input"
-              type="file"
-              name="image"
-              value={input.image}
-              onChange={(e: any) => {
-                handleChange(e);
-              }}
-            />
-          </div>
-        </div>
-        <PropertyTextInput
+        <PropertyTextInputV2
+          title="Address*"
+          placeholder="Ví dụ: 371 Huỳnh Tấn Phát, Quận 7, TPHCM"
+          margin="-10px"
+          name="address"
+          register={register}
+          type="text"
+          errorMessage={errors.address?.message}
+          value={user?.address}
+        />
+        <PropertyTextInputV2
+          size="col-lg-6 col-md-6"
+          title="Email*"
+          placeholder="Jhon@gmail.com"
+          margin="-10px"
+          name="email"
+          register={register}
+          type="email"
+          errorMessage={errors.email?.message}
+          value={user?.email}
+        />
+        <PropertyTextInputV2
+          size="col-lg-6 col-md-6"
+          title="Fullname*"
+          placeholder="Jhon"
+          margin="-10px"
+          name="fullname"
+          register={register}
+          type="text"
+          errorMessage={errors.fullname?.message}
+          value={user?.fullname}
+        />
+        <PropertyTextInputV2
+          title="Phone*"
+          placeholder="03344xxxx"
+          margin="-10px"
+          name="phone"
+          register={register}
+          type="text"
+          errorMessage={errors.phone?.message}
+          value={user?.phone}
+        />
+        <PropertyTextInputV2
+          // size="col-lg-6 col-md-6"
+          title="Occupation*"
+          placeholder="Nghề nghiệp"
+          margin="-10px"
+          name="occupation"
+          register={register}
+          type="text"
+          errorMessage={errors.fullname?.message}
+          value={user?.occupation}
+        />
+
+        <PropertyTextAreaV3
+          title="About me*"
+          name="about"
+          register={register}
+        />
+        {/* <PropertyTextInput
+          title="About me*"
+          placeholder=""
+          margin="-10px"
+          name="about"
+          register={register}
+          type="text"
+          errorMessage={errors.phone?.message}
+        /> */}
+        {/* <PropertyTextInput
           size="col-lg-6 col-md-6"
           title="First Name*"
           name="firstName"
@@ -98,10 +180,10 @@ function PersonalInfo() {
           name="aboutText"
           placeholder="Type here"
           sizeFull={true}
-        />
+        /> */}
         <h4 className="homec-modal-form__middle">Social Link</h4>
         <div className="row">
-          <PropertyTextInput
+          {/* <PropertyTextInput
             size="col-lg-6 col-md-6"
             title="Facebook*"
             name="facebook"
@@ -132,7 +214,7 @@ function PersonalInfo() {
             value={input.linkedin}
             handleChange={(e: any) => handleChange(e)}
             placeholder="Linkedin Link"
-          />
+          /> */}
         </div>
       </div>
       {/* Form Group  */}

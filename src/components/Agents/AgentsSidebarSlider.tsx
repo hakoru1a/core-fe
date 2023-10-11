@@ -8,7 +8,7 @@ function AgentsSidebarSlider() {
     <div className="mg-top-30">
       <div
         className="homec-agent-card homec-bg-cover"
-        style={{ backgroundImage: "url('img/vector.svg')" }}
+        style={{ backgroundImage: "url('/img/vector.svg')" }}
       >
         <h4 className="homec-agent-card__title mg-btm-20 text-white">
           Our Broker List

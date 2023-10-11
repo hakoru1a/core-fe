@@ -1,52 +1,49 @@
-import Layout from "./Layout";
+import { useQuery } from "@tanstack/react-query";
+import wishlistApi from "../../apis/wishlist.api";
 import LatestPropertyCard from "../../components/Cards/LatestPropertyCard";
-import properties from "../../data/property";
-import Pagination from "../../components/Pagination";
-import { useState } from "react";
+import Preloader from "../../components/Loader";
+import { useAuth } from "../../hooks/useAuth";
+import Layout from "./Layout";
 
 function Saved() {
-  const [currentPage, setCurrentPage] = useState(1);
-  const totalPage = 24;
+  const user = useAuth();
+  const { data, isFetching } = useQuery({
+    queryFn: () => wishlistApi.get(Number(user.id)),
+    queryKey: ["wishlist", user.id],
+  });
 
-  const handelPage = (page: any) => {
-    if (page === "prev") {
-      if (currentPage > 1) {
-        setCurrentPage(currentPage - 1);
-      }
-    } else if (page === "next") {
-      if (currentPage < totalPage) {
-        setCurrentPage(currentPage + 1);
-      }
-    } else {
-      setCurrentPage(page);
-    }
-  };
+  if (isFetching) return <Preloader />;
   return (
     <Layout title="Saved">
-      {properties?.map((property) => (
+      {data?.data?.data.map((property) => (
         <LatestPropertyCard
+          id={property.id}
           key={property.id}
-          img={property.img}
-          likeLink={property.likeLink}
-          detailsLink={property.detailsLink}
-          agentName={property.agentName}
-          agentImg={property.agentImg}
+          img="https://placehold.co/350x220"
+          isMyWishlist={true}
+          // likeLink={property.likeLink}
+          detailsLink={`/property/${property.id}`}
+          agentName={property.customer?.fullname}
+          agentImg="https://placehold.co/35x35"
           price={property.price}
-          period={property.period}
-          whatFor={property.whatFor}
-          propertyLink={property.propertyLink}
-          name={property.name}
+          period={property.rentPeriod}
+          whatFor={property.purpose}
+          // propertyLink={property.propertyLink}
+          name={property.propertyName}
           address={property.address}
-          detailsList={property.detailsList}
-          classes="col-12 mg-top-30"
-          view={"list"}
+          detailsList={[
+            {
+              img: "/img/room-icon.svg",
+              name: `${property.bed} Bed`,
+            },
+            {
+              img: "/img/bath-icon.svg",
+              name: `${property.bath} Bathroom`,
+            },
+            { img: "/img/size-icon.svg", name: "5x9 m2" },
+          ]}
         />
       ))}
-      <Pagination
-        totalPage={totalPage}
-        handlePage={handelPage}
-        currentPage={currentPage}
-      />
     </Layout>
   );
 }

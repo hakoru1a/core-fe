@@ -4,6 +4,7 @@ import Select from "react-dropdown-select";
 
 function SelectiveInput({ title, options, classes }: any) {
   const [value, setValue] = useState(options[0]);
+
   return (
     <div className={`property-sidebar__single ${classes}`}>
       <div className="property-sidebar__filters">

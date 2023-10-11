@@ -20,17 +20,17 @@ function Topbar({ v2 }: TopbarProps) {
               >
                 <TopbarBtn
                   link="mailto:HomeC34@gmail.com"
-                  img="img/email-icon.svg"
+                  img="/img//email-icon.svg"
                   text="HomeC34@gmail.com"
                 />
                 <TopbarBtn
                   link="tel:+00239040248"
-                  img="img/phone-icon.svg"
+                  img="/img//phone-icon.svg"
                   text="+00 23904 0248"
                 />
                 <TopbarBtn
                   link="mailto:HomeC34@gmail.com"
-                  img="img/locations-icon.svg"
+                  img="/img//locations-icon.svg"
                   text="1901 Thornridge Cir. Shiloh, Hawaii 81063"
                 />
               </ul>

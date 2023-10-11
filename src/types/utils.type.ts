@@ -7,6 +7,15 @@ export interface ErrorResponse<Data> {
   data?: Data;
 }
 
+export interface PageReponse<Data> {
+  content?: Data[];
+  totalPages?: number;
+}
+
+export interface SearchParams {
+  page?: string;
+}
+
 // cú pháp `-?` sẽ loại bỏ undefiend của key optional
 
 export type NoUndefinedField<T> = {

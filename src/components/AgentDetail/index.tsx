@@ -64,7 +64,7 @@ function AgentDetail() {
               <AgentDetailCard
                 image="https://placehold.co/360x390"
                 name="Wade De Warren"
-                position="Real Estate Broker"
+                position="Customer"
                 contactNumber="+0938 4937 23"
                 email="Youremailad@gmail.com"
                 location="2972 Westheimer Rd. Santa Ana, Illinois 85486"
@@ -77,7 +77,7 @@ function AgentDetail() {
               <PropertyAgents
                 image="https://placehold.co/90x90"
                 name="Wade De Warren"
-                position="Real Estate Broker"
+                position="Customer"
               />
             </div>
             <div className="row mg-top-30">
@@ -98,12 +98,12 @@ function AgentDetail() {
                 whatFor="To sale"
                 propertyLink="#"
                 name="Northwest Office Space"
-                locationImg="img/location-icon.svg"
+                locationImg="/img/location-icon.svg"
                 address="1901 Thornridge Cir. Shiloh, Hawaii 81063"
                 detailsList={[
-                  { img: "img/room-icon.svg", name: "3 Room" },
-                  { img: "img/bath-icon.svg", name: "2 Bathroom" },
-                  { img: "img/size-icon.svg", name: "5x9 m2" },
+                  { img: "/img/room-icon.svg", name: "3 Room" },
+                  { img: "/img/bath-icon.svg", name: "2 Bathroom" },
+                  { img: "/img/size-icon.svg", name: "5x9 m2" },
                 ]}
                 classes={`${
                   gridStyle === "grid"
@@ -123,12 +123,12 @@ function AgentDetail() {
                 whatFor="To sale"
                 propertyLink="#"
                 name="Countryside Lake View..."
-                locationImg="img/location-icon.svg"
+                locationImg="/img/location-icon.svg"
                 address="1901 Thornridge Cir. Shiloh, Hawaii 81063"
                 detailsList={[
-                  { img: "img/room-icon.svg", name: "3 Room" },
-                  { img: "img/bath-icon.svg", name: "2 Bathroom" },
-                  { img: "img/size-icon.svg", name: "5x9 m2" },
+                  { img: "/img/room-icon.svg", name: "3 Room" },
+                  { img: "/img/bath-icon.svg", name: "2 Bathroom" },
+                  { img: "/img/size-icon.svg", name: "5x9 m2" },
                 ]}
                 classes={`${
                   gridStyle === "grid"
@@ -148,12 +148,12 @@ function AgentDetail() {
                 whatFor="To sale"
                 propertyLink="#"
                 name="Brand New Shopping Mall"
-                locationImg="img/location-icon.svg"
+                locationImg="/img/location-icon.svg"
                 address="1901 Thornridge Cir. Shiloh, Hawaii 81063"
                 detailsList={[
-                  { img: "img/room-icon.svg", name: "3 Room" },
-                  { img: "img/bath-icon.svg", name: "2 Bathroom" },
-                  { img: "img/size-icon.svg", name: "5x9 m2" },
+                  { img: "/img/room-icon.svg", name: "3 Room" },
+                  { img: "/img/bath-icon.svg", name: "2 Bathroom" },
+                  { img: "/img/size-icon.svg", name: "5x9 m2" },
                 ]}
                 classes={`${
                   gridStyle === "grid"
@@ -173,12 +173,12 @@ function AgentDetail() {
                 whatFor="To sale"
                 propertyLink="#"
                 name="Affordable Green Villa House"
-                locationImg="img/location-icon.svg"
+                locationImg="/img/location-icon.svg"
                 address="1901 Thornridge Cir. Shiloh, Hawaii 81063"
                 detailsList={[
-                  { img: "img/room-icon.svg", name: "3 Room" },
-                  { img: "img/bath-icon.svg", name: "2 Bathroom" },
-                  { img: "img/size-icon.svg", name: "5x9 m2" },
+                  { img: "/img/room-icon.svg", name: "3 Room" },
+                  { img: "/img/bath-icon.svg", name: "2 Bathroom" },
+                  { img: "/img/size-icon.svg", name: "5x9 m2" },
                 ]}
                 classes={`${
                   gridStyle === "grid"
@@ -198,12 +198,12 @@ function AgentDetail() {
                 whatFor="To sale"
                 propertyLink="#"
                 name="Diamond Manco Apartment"
-                locationImg="img/location-icon.svg"
+                locationImg="/img/location-icon.svg"
                 address="1901 Thornridge Cir. Shiloh, Hawaii 81063"
                 detailsList={[
-                  { img: "img/room-icon.svg", name: "3 Room" },
-                  { img: "img/bath-icon.svg", name: "2 Bathroom" },
-                  { img: "img/size-icon.svg", name: "5x9 m2" },
+                  { img: "/img/room-icon.svg", name: "3 Room" },
+                  { img: "/img/bath-icon.svg", name: "2 Bathroom" },
+                  { img: "/img/size-icon.svg", name: "5x9 m2" },
                 ]}
                 classes={`${
                   gridStyle === "grid"
@@ -224,12 +224,12 @@ function AgentDetail() {
                   whatFor="To sale"
                   propertyLink="#"
                   name="Countryside Modern Lake"
-                  locationImg="img/location-icon.svg"
+                  locationImg="/img/location-icon.svg"
                   address="1901 Thornridge Cir. Shiloh, Hawaii 81063"
                   detailsList={[
-                    { img: "img/room-icon.svg", name: "3 Room" },
-                    { img: "img/bath-icon.svg", name: "2 Bathroom" },
-                    { img: "img/size-icon.svg", name: "5x9 m2" },
+                    { img: "/img/room-icon.svg", name: "3 Room" },
+                    { img: "/img/bath-icon.svg", name: "2 Bathroom" },
+                    { img: "/img/size-icon.svg", name: "5x9 m2" },
                   ]}
                   classes={`${
                     gridStyle === "grid"

@@ -8,12 +8,12 @@ function HomecHero() {
       <div className="homec-hero-group">
         <img
           className="homec-hero-group-img homec-hero-group-img__v1"
-          src="img/hero-shape-group.svg"
+          src="/img/hero-shape-group.svg"
           alt="#"
         />
         <img
           className="homec-hero-group-img homec-hero-group-img__v2"
-          src="img/hero-shape-group-2.svg"
+          src="/img/hero-shape-group-2.svg"
           alt="#"
         />
       </div>

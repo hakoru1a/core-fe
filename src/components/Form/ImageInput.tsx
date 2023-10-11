@@ -22,7 +22,7 @@ function ImageInput({ uploadedImg, handleDelete, handleImage }: any) {
               {/* Image Input   */}
               <div className="homec-upload-images">
                 <div className="row">
-                  {uploadedImg?.map((image, index) => (
+                  {uploadedImg?.map((image: any, index: number) => (
                     <UploadedImageCard
                       key={index + "img"}
                       img={image}
@@ -57,7 +57,7 @@ function ImageInput({ uploadedImg, handleDelete, handleImage }: any) {
                   className="homec-image-video-upload__label"
                   htmlFor="input-video1"
                 >
-                  <img src="img/upload-file-2.svg" alt="#" />
+                  <img src="/img/upload-file-2.svg" alt="#" />
                   <span className="homec-image-video-upload__title homec-image-video-upload__title--v2">
                     Drag & Drop or{" "}
                     <span className="homec-primary-color">Choose File</span> to

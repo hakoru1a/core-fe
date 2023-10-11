@@ -6,12 +6,12 @@ function Agents() {
   return (
     <section className="homec-about homec-bg-third-color pd-top-120 pd-btm-120">
       <div className="homec-shape">
-        <AboutShapeImg img="img/anim-shape-1.svg" design="homec-shape-1" />
-        <AboutShapeImg img="img/anim-shape-2.svg" design="homec-shape-2" />
-        <AboutShapeImg img="img/anim-shape-3.svg" design="homec-shape-3" />
-        <AboutShapeImg img="img/anim-shape-1.svg" design="homec-shape-1" />
-        <AboutShapeImg img="img/anim-shape-2.svg" design="homec-shape-2" />
-        <AboutShapeImg img="img/anim-shape-3.svg" design="homec-shape-3" />
+        <AboutShapeImg img="/img/anim-shape-1.svg" design="homec-shape-1" />
+        <AboutShapeImg img="/img/anim-shape-2.svg" design="homec-shape-2" />
+        <AboutShapeImg img="/img/anim-shape-3.svg" design="homec-shape-3" />
+        <AboutShapeImg img="/img/anim-shape-1.svg" design="homec-shape-1" />
+        <AboutShapeImg img="/img/anim-shape-2.svg" design="homec-shape-2" />
+        <AboutShapeImg img="/img/anim-shape-3.svg" design="homec-shape-3" />
       </div>
 
       <div className="container">

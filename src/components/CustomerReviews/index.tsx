@@ -12,7 +12,7 @@ function CustomerReviews() {
   return (
     <section
       className="homec-bg-third-color pd-top-120 pd-btm-120 homec-bg-cover"
-      style={{ backgroundImage: "url('img/bg-shape-three.svg'" }}
+      style={{ backgroundImage: "url('/img/bg-shape-three.svg'" }}
     >
       <div className="container">
         <div className="row">

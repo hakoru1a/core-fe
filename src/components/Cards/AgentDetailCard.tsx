@@ -34,14 +34,14 @@ function AgentDetailCard({
               </div>
               <ul className="homec-agent-detail__list mg-top-30">
                 <li>
-                  <img src="img/agent-phone.svg" alt="#" /> {contactNumber}
+                  <img src="/img/agent-phone.svg" alt="#" /> {contactNumber}
                 </li>
                 <li>
-                  <img src="img/agent-email.svg" alt="#" />{" "}
+                  <img src="/img/agent-email.svg" alt="#" />{" "}
                   <a href={`mailto:${email}`}>{email}</a>
                 </li>
                 <li>
-                  <img src="img/agent-location.svg" alt="#" /> {location}
+                  <img src="/img/agent-location.svg" alt="#" /> {location}
                 </li>
               </ul>
               <ul className="homec-agent__social homec-agent__social--inline list-none mg-top-30">

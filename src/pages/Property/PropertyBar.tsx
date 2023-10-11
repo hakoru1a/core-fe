@@ -1,15 +1,22 @@
-import ProtoTypes from "prop-types";
+import ListBtn from "../../components/Button/ListBtn";
 import Search from "../../components/Form/Search";
 import ShowingResult from "./ShowingResult";
-import ListBtn from "../../components/Button/ListBtn";
 
-function PropertyBar({ gridStyle, handleGridStyle }: any) {
+function PropertyBar({
+  gridStyle,
+  handleGridStyle,
+  currentPage,
+  totalPage,
+}: any) {
   return (
     <div className="homec-property-bar">
       <div className="homec-property-bar__single">
         <Search />
         {/* Show Results   */}
-        <ShowingResult currentPage="1-2" totalPages="17" />
+        <ShowingResult
+          currentPage={currentPage}
+          totalPages={Number(totalPage)}
+        />
         {/* End Show Results  */}
       </div>
       <div className="homec-property-bar__single">
@@ -58,10 +65,5 @@ function PropertyBar({ gridStyle, handleGridStyle }: any) {
     </div>
   );
 }
-
-PropertyBar.propTypes = {
-  gridStyle: ProtoTypes.string.isRequired,
-  handleGridStyle: ProtoTypes.func.isRequired,
-};
 
 export default PropertyBar;

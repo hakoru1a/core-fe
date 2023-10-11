@@ -1,23 +1,23 @@
 import { useState } from "react";
 import PropertyDetailsBtn from "../../components/Button/PropertyDetailsBtn";
-import DetailsTab from "./DetailsTab";
-import DetailsTabFeatures from "./DetailsTabFeatures";
 import FloorDetails from "../../components/FloorDetails";
-import PropertyVideo from "../../components/PropertyVideo";
+import PropertyAgentsV2 from "../../components/Form/PropertyAgentsV2";
 import PropertyLocation from "../../components/PropertyLocation";
 import PropertyReview from "../../components/PropertyReview";
-import PropertyAgents from "../../components/Agents/PropertyAgents";
+import PropertyVideo from "../../components/PropertyVideo";
+import DetailsTab from "./DetailsTab";
+import DetailsTabFeatures from "./DetailsTabFeatures";
 
 function PropertyDetails() {
   const [activeTab, setActiveTab] = useState("Property Details");
-  const handleActive = (title) => {
+  const handleActive = (title: string) => {
     setActiveTab(title);
   };
 
   return (
     <section
       className="pd-top-0 homec-bg-third-color pd-btm-80 homec-bg-cover"
-      style={{ backgroundImage: "url('img/property-single-bg.svg')" }}
+      style={{ backgroundImage: "url('/img/property-single-bg.svg')" }}
     >
       <div className="container">
         <div className="row">
@@ -117,9 +117,9 @@ function PropertyDetails() {
               </div>
             </div>
           </div>
-          <PropertyAgents
+          <PropertyAgentsV2
             image="https://placehold.co/90x90"
-            name="Wade De Warren"
+            name="Đình Chương"
             position="Real Estate Broker"
           />
         </div>

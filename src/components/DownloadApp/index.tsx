@@ -5,12 +5,12 @@ function DownloadApp() {
   return (
     <section
       className="download-app homec-bg-cover homec-bg-primary-color pd-top-15 pd-btm-15"
-      style={{ backgroundImage: "url('img/download-vector.svg')" }}
+      style={{ backgroundImage: "url('/img/download-vector.svg')" }}
     >
       <div className="homec-shape">
-        <AboutShapeImg img="img/anim-shape-10.svg" design="homec-shape-11" />
-        <AboutShapeImg img="img/anim-shape-10.svg" design="homec-shape-12" />
-        <AboutShapeImg img="img/anim-shape-10.svg" design="homec-shape-13" />
+        <AboutShapeImg img="/img/anim-shape-10.svg" design="homec-shape-11" />
+        <AboutShapeImg img="/img/anim-shape-10.svg" design="homec-shape-12" />
+        <AboutShapeImg img="/img/anim-shape-10.svg" design="homec-shape-13" />
       </div>
       <div className="container">
         <div className="row">

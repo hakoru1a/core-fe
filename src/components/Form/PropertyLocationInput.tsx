@@ -34,7 +34,7 @@ function PropertyLocationInput({ location, handleLocation }: any) {
                       name: "Chittagong",
                     },
                     {
-                      id: 2,
+                      id: 3,
                       name: "Khulna",
                     },
                   ]}

@@ -31,16 +31,15 @@ export class Http {
     this.refreshTokenRequest = null;
     this.instance = axios.create({
       baseURL: config.baseUrl,
-      timeout: 10000,
+      // timeout: 10000,
       headers: {
         "Content-Type": "application/json",
       },
     });
     this.instance.interceptors.request.use(
       (config) => {
-        console.log(config);
         if (this.accessToken && config.headers) {
-          config.headers.authorization = this.accessToken;
+          config.headers.authorization = "Bearer " + this.accessToken;
           return config;
         }
         return config;
@@ -67,7 +66,7 @@ export class Http {
         }
         return response;
       },
-      (error: AxiosError) => {
+      (error: AxiosError<ErrorResponse<any>>) => {
         // Chỉ toast lỗi không phải 422 và 401
         if (
           ![
@@ -75,10 +74,29 @@ export class Http {
             HttpStatusCode.Unauthorized,
           ].includes(error.response?.status as number)
         ) {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          const data: any | undefined = error.response?.data;
-          const message = data?.message || error.message;
-          toast.error(message);
+          const data: any | undefined = error.response?.data?.data || undefined;
+          const message =
+            error?.response?.data.message ||
+            data?.message ||
+            error.message ||
+            data?.data?.message;
+          if (data) {
+            console.log(data);
+
+            const keys = Object.keys(data);
+            // console.log(keys);
+
+            for (const k of keys) {
+              console.log(data[k]?.appointmentdate);
+              if (data[k]?.appointmentdate) {
+                toast.error(data[k]?.appointmentdate);
+              } else toast.error(k + " " + String(data[k]).toLocaleLowerCase());
+            }
+          } else {
+            // console.log(error);
+            // console.log(message);
+            if (message !== "Chưa active account") toast.error(message);
+          }
         }
 
         // Lỗi Unauthorized (401) có rất nhiều trường hợp
@@ -123,6 +141,8 @@ export class Http {
           clearLS();
           this.accessToken = "";
           this.refreshToken = "";
+          console.log(error);
+
           toast.error(
             error.response?.data.data?.message || error.response?.data.message
           );

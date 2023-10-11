@@ -1,19 +1,32 @@
-import ProtoTypes from "prop-types";
+import { Link } from "react-router-dom";
+import useQueryParams from "../../hooks/useQueryParams";
+import { getUrlQuery } from "../../utils/utils";
 
-function Pagination({ totalPage, handlePage, currentPage }: any) {
+interface Props {
+  handlePage: (page: number | string) => void;
+  totalPage: number;
+  currentPage: number;
+}
+
+function Pagination({ totalPage, handlePage, currentPage }: Props) {
+  const params = useQueryParams();
+
   return (
-    <div className="row mg-top-40">
+    <div className="row mg-top-40 p-0">
       <div className="homec-pagination">
         <ul className="homec-pagination__list list-none">
           <li className="homec-pagination__button">
-            <a
+            <Link
               style={{ cursor: "pointer" }}
               onClick={() => {
                 handlePage("prev");
               }}
+              to={
+                currentPage === 1 ? "#" : getUrlQuery(params, currentPage - 1)
+              }
             >
               Prev
-            </a>
+            </Link>
           </li>
           {Array.from(Array(totalPage).keys()).map((item, index) =>
             index === 0 || index + 1 === totalPage ? (
@@ -21,13 +34,14 @@ function Pagination({ totalPage, handlePage, currentPage }: any) {
                 key={item + 1}
                 className={currentPage === index + 1 ? "active" : ""}
               >
-                <a
+                <Link
+                  to={getUrlQuery(params, index + 1)}
                   onClick={() => {
                     handlePage(index + 1);
                   }}
                 >
                   {index < 9 ? `0${index + 1}` : index + 1}
-                </a>
+                </Link>
               </li>
             ) : (index < 5 && currentPage < 5) ||
               (index > totalPage - 6 && currentPage > totalPage - 4) ? (
@@ -35,13 +49,14 @@ function Pagination({ totalPage, handlePage, currentPage }: any) {
                 key={item + 1}
                 className={currentPage === index + 1 ? "active" : ""}
               >
-                <a
+                <Link
+                  to={getUrlQuery(params, index + 1)}
                   onClick={() => {
                     handlePage(index + 1);
                   }}
                 >
                   {index < 9 ? `0${index + 1}` : index + 1}
-                </a>
+                </Link>
               </li>
             ) : index === currentPage - 2 ||
               index === currentPage - 1 ||
@@ -50,26 +65,28 @@ function Pagination({ totalPage, handlePage, currentPage }: any) {
                 key={item + 1}
                 className={currentPage === index + 1 ? "active" : ""}
               >
-                <a
+                <Link
+                  to={getUrlQuery(params, index + 1)}
                   onClick={() => {
                     handlePage(index + 1);
                   }}
                 >
                   {index < 9 ? `0${index + 1}` : index + 1}
-                </a>
+                </Link>
               </li>
             ) : currentPage > 4 && index === 2 ? (
               <li
                 key={item + 1}
                 className={currentPage === index + 1 ? "active" : ""}
               >
-                <a
+                <Link
+                  to={getUrlQuery(params, index + 1)}
                   onClick={() => {
                     handlePage(index + 1);
                   }}
                 >
                   ...
-                </a>
+                </Link>
               </li>
             ) : (
               currentPage < totalPage - 2 &&
@@ -78,13 +95,14 @@ function Pagination({ totalPage, handlePage, currentPage }: any) {
                   key={item + 1}
                   className={currentPage === index + 1 ? "active" : ""}
                 >
-                  <a
+                  <Link
+                    to={getUrlQuery(params, index + 1)}
                     onClick={() => {
                       handlePage(index + 1);
                     }}
                   >
                     ...
-                  </a>
+                  </Link>
                 </li>
               )
             )
@@ -94,24 +112,23 @@ function Pagination({ totalPage, handlePage, currentPage }: any) {
             style={{ cursor: "pointer" }}
             className="homec-pagination__button"
           >
-            <a
+            <Link
               onClick={() => {
                 handlePage("next");
               }}
+              to={
+                currentPage === totalPage
+                  ? "#"
+                  : getUrlQuery(params, currentPage + 1)
+              }
             >
               Next
-            </a>
+            </Link>
           </li>
         </ul>
       </div>
     </div>
   );
 }
-
-Pagination.propTypes = {
-  totalPage: ProtoTypes.number.isRequired,
-  handlePage: ProtoTypes.func.isRequired,
-  currentPage: ProtoTypes.number.isRequired,
-};
 
 export default Pagination;

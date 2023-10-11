@@ -1,24 +1,24 @@
 import { useEffect, useState } from "react";
-import Header from "../../components/Header";
+import { useNavigate } from "react-router-dom";
 import Breadcrumbs from "../../components/Breadcrumbs";
 import HistoryLinks from "../../components/Breadcrumbs/HistoryLinks";
+import GoTopBtn from "../../components/Button/GoTopBtn";
 import DownloadApp from "../../components/DownloadApp";
 import Footer from "../../components/Footer";
-import Sidebar from "./Sidebar";
-import DashboardComp from "./DashboardComp";
-import MyProperties from "./MyProperties";
-import InvoiceTable from "./InvoiceTable";
-import PersonalInfo from "./PersonalInfo";
-import Saved from "./Saved";
-import Reviews from "./Reviews";
-import ChangePassword from "./ChangePassword";
-import { useNavigate } from "react-router-dom";
-import GoTopBtn from "../../components/Button/GoTopBtn";
+import Header from "../../components/Header";
 import Preloader from "../../components/Loader";
+import ChangePassword from "./ChangePassword";
+import InvoiceTable from "./InvoiceTable";
+import MyProperties from "./MyProperties";
+import PersonalInfo from "./PersonalInfo";
+import Reviews from "./Reviews";
+import Saved from "./Saved";
+import Sidebar from "./Sidebar";
+import TimeTable from "../../components/Form/TimeTable";
 
 function Dashboard() {
   // Inner navigation
-  const [activeComponent, setActiveComponent] = useState("Dashboard");
+  const [activeComponent, setActiveComponent] = useState("My Properties");
   const navigate = useNavigate();
 
   // navigate to logout
@@ -60,13 +60,12 @@ function Dashboard() {
                       activeComponent={activeComponent}
                       setComponent={setActiveComponent}
                     />
-                    {activeComponent === "Dashboard" && <DashboardComp />}
-
                     {activeComponent === "My Properties" && <MyProperties />}
                     {activeComponent === "Invoice" && <InvoiceTable />}
                     {activeComponent === "Personals Info" && <PersonalInfo />}
                     {activeComponent === "Saved" && <Saved />}
                     {activeComponent === "Reviews" && <Reviews />}
+                    {activeComponent === "My Time" && <TimeTable />}
                     {activeComponent === "Change Password" && (
                       <ChangePassword />
                     )}

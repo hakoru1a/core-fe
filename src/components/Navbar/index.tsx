@@ -1,6 +1,7 @@
 import ProtoTypes from "prop-types";
 import NavBtn from "./NavBtn";
 import { Link } from "react-router-dom";
+import { useAuth } from "../../hooks/useAuth";
 
 interface NavbarProps {
   handleSidebar: () => void;
@@ -8,6 +9,7 @@ interface NavbarProps {
 }
 
 function Navbar({ handleSidebar, secondNav }: NavbarProps) {
+  const user = useAuth();
   return (
     <div className={"homec-header__middle"}>
       <div className={"container"}>
@@ -20,7 +22,7 @@ function Navbar({ handleSidebar, secondNav }: NavbarProps) {
               <div className="homec-header__group">
                 <div className="homec-header__logo">
                   <Link to="/">
-                    <img src="img/logo.png" alt="#" />
+                    <img src="/img//logo.png" alt="#" />
                   </Link>
                 </div>
                 <div className="homec-header__menu">
@@ -104,11 +106,17 @@ function Navbar({ handleSidebar, secondNav }: NavbarProps) {
                     to="/add-property"
                     className="homec-btn homec-btn__second"
                   >
-                    <span>Add Property</span>
+                    <span>
+                      Add Property: <strong>{user.times} </strong>
+                      {user.times > 1 ? "turns" : "turn"}
+                    </span>
                   </Link>
                 ) : (
                   <Link to="/add-property" className="homec-btn">
-                    <span>Add Property</span>
+                    <span>
+                      Add Property: <strong>{user.times} </strong>
+                      {user.times > 1 ? "turns" : "turn"}
+                    </span>
                   </Link>
                 )}
               </div>

@@ -14,7 +14,7 @@ function FunFacts({ v2 }: any) {
           <div className="col-12">
             <div
               className="homec-funfact homec-border"
-              style={{ backgroundImage: "url(img/bg-pattern1.png)" }}
+              style={{ backgroundImage: "url(/img/bg-pattern1.png)" }}
             >
               <div className="row align-items-center">
                 <div className="col-lg-5 col-12">
@@ -50,24 +50,24 @@ function FunFacts({ v2 }: any) {
                   <div className="homec-funfacts">
                     <div className="row">
                       <FunfactCard
-                        img="img/funfact-icon1.svg"
+                        img="/img/funfact-icon1.svg"
                         count={435}
                         title="Happy Customer"
                         standard="K"
                       />
                       <FunfactCard
-                        img="img/funfact-icon2.svg"
+                        img="/img/funfact-icon2.svg"
                         count={123}
                         title="Co-agent"
                         standard="K"
                       />
                       <FunfactCard
-                        img="img/funfact-icon3.svg"
+                        img="/img/funfact-icon3.svg"
                         count={120}
                         title="Branches around"
                       />
                       <FunfactCard
-                        img="img/funfact-icon3.svg"
+                        img="/img/funfact-icon3.svg"
                         count={150}
                         title="Built Hose"
                         standard="K"

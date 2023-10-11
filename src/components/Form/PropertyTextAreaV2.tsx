@@ -1,5 +1,3 @@
-import ProtoTypes from "prop-types";
-
 function PropertyTextAreaV2({
   title,
   value,
@@ -26,14 +24,5 @@ function PropertyTextAreaV2({
     </div>
   );
 }
-
-PropertyTextAreaV2.propTypes = {
-  title: ProtoTypes.string,
-  value: ProtoTypes.string.isRequired,
-  handleChange: ProtoTypes.func.isRequired,
-  name: ProtoTypes.string.isRequired,
-  placeHolder: ProtoTypes.string,
-  sizeFull: ProtoTypes.bool,
-};
 
 export default PropertyTextAreaV2;

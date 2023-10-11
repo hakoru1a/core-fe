@@ -5,7 +5,7 @@ function Blog() {
     <section
       id="blog"
       className="blog-area homec-bg-cover section-padding"
-      style={{ backgroundImage: "url('img/bg-shape-two.svg')" }}
+      style={{ backgroundImage: "url('/img/bg-shape-two.svg')" }}
     >
       <div className="blog-bg-pattern">
         <div className="container">

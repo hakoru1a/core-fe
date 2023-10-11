@@ -1,490 +1,435 @@
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
-import PropertyTextInput from "./PropertyTextInput";
-import PropertyTextArea from "./PropertyTextArea";
-import ImageInput from "./ImageInput";
-import PropertyVideoInput from "./PropertyVideoInput";
-import PropertyLocationInput from "./PropertyLocationInput";
-import PropertyAminitiesInput from "./PropertyAminitiesInput";
-import KeyValueInput from "./KeyValueInput";
-import PropertyPlan from "./PropertyPlan";
-import PropertyTextAreaV2 from "./PropertyTextAreaV2";
-import SwitcherBtn from "./SwitcherBtn";
+import { useForm } from "react-hook-form";
+import Carousel from "react-multi-carousel";
+import "react-multi-carousel/lib/styles.css";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import propertyApi from "../../apis/property.api";
+import userApi from "../../apis/user.api";
+import { aminities, propertyType } from "../../data/property";
+import { useAuth } from "../../hooks/useAuth";
+import useQueryParams from "../../hooks/useQueryParams";
+import { setGlobalUser } from "../../redux/slice/user.slice";
+import { RootState } from "../../store";
+import { setProfileToLS } from "../../utils/auth";
+import { responsiveHeroSlider } from "../../utils/responsiveSlider";
+import { PropertySchema, propertySchema } from "../../utils/rules";
+import { convertNameToCode } from "../../utils/utils";
+import Preloader from "../Loader";
+import PropertyTextInputV2 from "./PropertyTextInputV2";
+import Places from "./SimpleMap";
+// import Places from "./SimpleMap";
 
+type FormData = PropertySchema;
+const schema = propertySchema;
 function PropertyFrom() {
-  const [input, setInput] = useState({
-    title: "",
-    slug: "",
-    propertyType: "",
-    purpose: "",
-    rentPeriod: "",
-    propertyPrice: "",
-    area: "",
-    unit: "",
-    bedroom: "",
-    bathroom: "",
-    garage: "",
-    kitchen: "",
-    description: "",
-    propertyImage: [
-      { id: 1, img: "https://placehold.co/165x205" },
-      { id: 2, img: "https://placehold.co/165x205" },
-      { id: 3, img: "https://placehold.co/165x205" },
-    ],
-    video: { video: "", description: "", YTVideoId: "" },
-    location: { city: "", address: "", addressDetails: "", googleMap: "" },
-    aminities: {
-      Breakfast: true,
-      Lunch: false,
-      ["Free Wifi"]: false,
-      ["Swimming Pool"]: false,
-      Cleaning: false,
-    },
-    nearestLocation: [
-      { id: 1, key: "", value: "" },
-      { id: 2, key: "", value: "" },
-      { id: 3, key: "", value: "" },
-    ],
-    additionalInformation: [
-      { id: 1, key: "", value: "" },
-      { id: 2, key: "", value: "" },
-      { id: 3, key: "", value: "" },
-    ],
-    propertyPlan: [
-      {
-        id: 1,
-        videoId: "",
-        thumbnail: "https://placehold.co/528x196",
-        desc: "",
-      },
-      {
-        id: 2,
-        videoId: "",
-        thumbnail: "https://placehold.co/528x196",
-        desc: "",
-      },
-      {
-        id: 3,
-        videoId: "",
-        thumbnail: "https://placehold.co/528x196",
-        desc: "",
-      },
-    ],
-    seoInfo: {
-      title: "",
-      desc: "",
-      status: true,
-      urgentProperty: false,
-      featured: true,
-      topProperty: false,
+  const user = useAuth();
+  const params = useQueryParams();
+  const dispatch = useDispatch();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    watch,
+  } = useForm<FormData>({
+    resolver: yupResolver(schema),
+    defaultValues: {
+      thumbs: {},
+      // imageDetails: {},
+      // video: {},
+      rentPeriod: params?.purpose === "for-rent" ? undefined : "0",
     },
   });
-
-  // handle property information
-
-  const handleTextChange = (e: any) => {
-    setInput({ ...input, [e.target.name]: e.target.value });
-  };
-
-  // handle editable textarea
-  const handleTextArea = (e: any) => {
-    setInput({ ...input, [e.name]: e.value });
-  };
-
-  // delete property image
-
-  const handleImageDelete = (id: any) => {
-    setInput({
-      ...input,
-      propertyImage: input.propertyImage.filter((image) => image.id !== id),
-    });
-  };
-
-  // handle property video input sector
-
-  const handleVideoChange = (e: any) => {
-    setInput({
-      ...input,
-      video: { ...input.video, [e.target.name]: e.target.value },
-    });
-  };
-
-  // handle property location input sector
-
-  const handleLocationChange = (e: any) => {
-    setInput({
-      ...input,
-      location: { ...input.location, [e.target.name]: e.target.value },
-    });
-  };
-
-  // handle property image input sector
-
-  const handleImageInput = (img: any) => {
-    const updatedImg = [...input.propertyImage];
-    updatedImg.push({
-      id:
-        updatedImg.reduce((total: any, current: any) => total > current.id, 0) +
-        1,
-      img,
-    });
-  };
-
-  // handle aminities
-
-  const handleCheckBox = (e: any) => {
-    setInput({
-      ...input,
-      aminities: { ...input.aminities, [e.target.name]: e.target.checked },
-    });
-  };
-  // handle Property Plan, additionalInformation, nearestLocation add new item or delete item
-
-  // const handleAddOrDelete = (type: any, id: any, keyType: string) => {
-  //   if (type === "add") {
-  //     const newId = input?[keyType].reduce((max: number, current: any) => (max < current.id ? current.id : max), 0) + 1;
-  //     setInput({
-  //       ...input,
-  //       [keyType]: [{ id: newId, key: "", value: "" }, ...input?[keyType]]
-  //     });
-  //   } else {
-  //     setInput({
-  //       ...input,
-  //       [keyType]: input?[keyType].filter((item: any) => item.id != id)
-  //     });
-  //   }
-  // };
-  const handleAddOrDelete = (
-    type: "add" | "delete",
-    id: any,
-    keyType: string,
-    input: { [key: string]: any[] }, // Update this type as needed
-    setInput: React.Dispatch<React.SetStateAction<{ [key: string]: any[] }>> // Update this type as needed
-  ) => {
-    if (type === "add") {
-      const newId =
-        input[keyType].reduce(
-          (max: number, current: any) => (max < current.id ? current.id : max),
-          0
-        ) + 1;
-      setInput((prevInput) => ({
-        ...prevInput,
-        [keyType]: [{ id: newId, key: "", value: "" }, ...prevInput[keyType]],
-      }));
-    } else {
-      setInput((prevInput) => ({
-        ...prevInput,
-        [keyType]: prevInput[keyType].filter((item: any) => item.id !== id),
-      }));
-    }
-  };
-
-  // handle Property Plan, additionalInformation, nearestLocation input filled
-  // const handleKeyValueChange = ({ id, keyType, inputType, value }: any) => {
-  //   // setInput({
-  //   //   ...input,
-  //   //   [keyType]: input?[keyType].map((item) =>
-  //   //     item.id === id ? { ...item, [inputType]: value } : item
-  //   //   ),
-  //   // });
-  // };
-
-  const handleKeyValueChange = ({
-    id,
-    keyType,
-    inputType,
-    value,
-  }: {
-    id: number;
-    keyType: string;
-    inputType: string;
-    value: any;
-  }) => {
-    setInput((prevInput: any) => ({
-      ...prevInput,
-      [keyType]: prevInput[keyType].map((item: any) =>
-        item.id === id ? { ...item, [inputType]: value } : item
-      ),
-    }));
-  };
-
-  //handle SEO Sector input
-  const handleSEO = (e: any, value: any) => {
-    if (typeof value === "undefined") {
-      setInput({
-        ...input,
-        seoInfo: { ...input.seoInfo, [e.target.name]: e.target.value },
-      });
-    } else {
-      setInput({
-        ...input,
-        seoInfo: { ...input.seoInfo, [e]: value },
-      });
-    }
-  };
-
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
-    console.log(input);
-  };
-
+  const thumbFiles: any = watch("thumbs");
+  // const imageDetails: any = watch("imageDetails");
+  // const video: any = watch("video");
+  const navigate = useNavigate();
+  const { mutate, isLoading } = useMutation({
+    mutationFn: (data) => propertyApi.registerProperty(data),
+    onSuccess: async () => {
+      const { data } = await userApi.getCurrentUser();
+      setProfileToLS(data.data);
+      dispatch(setGlobalUser(data.data));
+      navigate("/dashboard");
+      toast.success("Đăng nhà thành công chờ duyệt nhà");
+    },
+  });
+  const [description, setDescription] = useState<string>();
+  const { address, lat, lng } = useSelector(
+    (state: RootState) => state.location
+  );
+  const onSubmit = handleSubmit((data) => {
+    const mySubmit = {
+      ...data,
+      description,
+      medias: [...thumbFiles],
+      // medias: [...thumbFiles, ...imageDetails, ...video],
+      latitude: lat || "106.6296638",
+      longitude: lng || "10.8230989",
+      address: address || "TPHCM",
+      purpose: params?.purpose.toUpperCase().replace("-", "_"),
+      customer: user.id,
+    };
+    // delete mySubmit.imageDetails;
+    // delete mySubmit.thumbs;
+    console.log(mySubmit);
+    mutate(mySubmit);
+  });
+  if (isLoading) {
+    return <Preloader />;
+  }
   return (
     <section className="pd-top-80 pd-btm-80">
       <div className="container">
         <div className="row">
           <div className="col-12">
-            <form action="#" onSubmit={(e) => handleSubmit(e)}>
+            <form action="#" onSubmit={onSubmit}>
               <div className="homec-submit-form">
                 <h4 className="homec-submit-form__title">
                   Property Information
                 </h4>
                 <div className="homec-submit-form__inner">
                   <div className="row">
-                    <PropertyTextInput
-                      title="Property Title*"
-                      name="title"
-                      value={input.title}
-                      handleChange={handleTextChange}
-                      placeholder="Title"
+                    <PropertyTextInputV2
+                      title="Property name*"
+                      placeholder="Ví dụ: Toà nhà A"
+                      name="propertyName"
+                      register={register}
+                      type="text"
+                      errorMessage={errors.propertyName?.message}
                     />
-                    <PropertyTextInput
-                      title="Slug*"
-                      name="slug"
-                      value={input.slug}
-                      handleChange={handleTextChange}
-                      placeholder="Here is dmeo text"
-                    />
-                    <PropertyTextInput
-                      size="col-lg-6 col-md-6"
-                      title="Property Type*"
-                      name="propertyType"
-                      value={input.propertyType}
-                      handleChange={handleTextChange}
-                      placeholder="Apartment"
-                    />
-                    <PropertyTextInput
-                      size="col-lg-6 col-md-6"
-                      title="Purpose*"
-                      name="purpose"
-                      value={input.purpose}
-                      handleChange={handleTextChange}
-                      placeholder="For Rent"
-                    />
-                    <PropertyTextInput
-                      size="col-lg-6 col-md-6"
-                      title="Rent Period*"
-                      name="rentPeriod"
-                      value={input.rentPeriod}
-                      handleChange={handleTextChange}
-                      placeholder="Monthly"
-                    />
-                    <PropertyTextInput
+                    {params?.purpose === "for-rent" && (
+                      <PropertyTextInputV2
+                        size="col-lg-6 col-md-6"
+                        title="Rent Period*"
+                        name="rentPeriod"
+                        errorMessage={errors.rentPeriod?.message}
+                        register={register}
+                        placeholder="Monthly"
+                        type="number"
+                      />
+                    )}
+
+                    <PropertyTextInputV2
                       size="col-lg-6 col-md-6"
                       title="Property Price"
-                      name="propertyPrice"
-                      value={input.propertyPrice}
-                      handleChange={handleTextChange}
+                      name="price"
                       placeholder="24345"
+                      errorMessage={errors.price?.message}
+                      register={register}
+                      type="number"
                     />
-                    <PropertyTextInput
+                    <PropertyTextInputV2
                       size="col-lg-6 col-md-6"
                       title="Total Area (sq:Ft)*"
                       name="area"
-                      value={input.area}
-                      handleChange={handleTextChange}
-                      placeholder="Here is demo text"
-                    />
-                    <PropertyTextInput
-                      size="col-lg-6 col-md-6"
-                      title="Total Unit*"
-                      name="unit"
-                      value={input.unit}
-                      handleChange={handleTextChange}
-                      placeholder="1"
+                      placeholder="24345"
+                      errorMessage={errors.area?.message}
+                      register={register}
                       type="number"
                     />
-                    <PropertyTextInput
+                    <PropertyTextInputV2
                       size="col-lg-6 col-md-6"
                       title="Total Bedroom*"
-                      name="bedroom"
-                      value={input.bedroom}
-                      handleChange={handleTextChange}
+                      name="bed"
+                      errorMessage={errors.bed?.message}
+                      register={register}
                       placeholder="2"
                       type="number"
                     />
-                    <PropertyTextInput
+                    <PropertyTextInputV2
                       size="col-lg-6 col-md-6"
                       title="Total Bathroom*"
-                      name="bathroom"
-                      value={input.bathroom}
-                      handleChange={handleTextChange}
+                      name="bath"
+                      errorMessage={errors.bath?.message}
+                      register={register}
                       placeholder="2"
                       type="number"
                     />
-                    <PropertyTextInput
+                    <PropertyTextInputV2
                       size="col-lg-6 col-md-6"
                       title="Total Garage*"
                       name="garage"
-                      value={input.garage}
-                      handleChange={handleTextChange}
+                      errorMessage={errors.garage?.message}
+                      register={register}
                       placeholder="1"
                       type="number"
                     />
-                    <PropertyTextInput
+                    <PropertyTextInputV2
                       size="col-lg-6 col-md-6"
                       title="Total Kitchen*"
                       name="kitchen"
-                      value={input.kitchen}
-                      handleChange={handleTextChange}
+                      errorMessage={errors.kitchen?.message}
+                      register={register}
                       placeholder="1"
                       type="number"
                     />
                   </div>
-                  {/* Single Form Element  */}
-                  <PropertyTextArea
-                    title="Description*"
-                    name="description"
-                    value={input.description}
-                    handleChange={handleTextArea}
-                    placeholder="Description"
-                  />
-                </div>
-              </div>
-              <ImageInput
-                uploadedImg={input.propertyImage}
-                handleDelete={handleImageDelete}
-                handleImage={handleImageInput}
-              />
-              <PropertyVideoInput
-                handleVideoInput={handleVideoChange}
-                video={input.video}
-              />
-              <PropertyLocationInput
-                location={input.location}
-                handleLocation={handleLocationChange}
-              />
-              <PropertyAminitiesInput
-                aminities={input.aminities}
-                handleChange={handleCheckBox}
-              />
-              <KeyValueInput
-                info={input.nearestLocation}
-                handleAddOrDelete={handleAddOrDelete}
-                handleChange={handleKeyValueChange}
-                title="Nearest Location"
-                filedTitle="Nearest Location*"
-                filedTitleTwo="Distance(KM)*"
-                placeholderTwo="10km"
-                options={[
-                  {
-                    id: 1,
-                    name: "Dhaka",
-                  },
-                  {
-                    id: 2,
-                    name: "Chittagong",
-                  },
-                  {
-                    id: 2,
-                    name: "Khulna",
-                  },
-                ]}
-                keyType="nearestLocation"
-              />
-
-              <KeyValueInput
-                info={input.additionalInformation}
-                handleAddOrDelete={handleAddOrDelete}
-                handleChange={handleKeyValueChange}
-                title="Additional Information"
-                filedTitle="Key*"
-                filedTitleTwo="Value*"
-                placeholderTwo="Type Here"
-                placeholderOne="Type Here"
-                options={[
-                  {
-                    id: 1,
-                    name: "Dhaka",
-                  },
-                  {
-                    id: 2,
-                    name: "Chittagong",
-                  },
-                  {
-                    id: 2,
-                    name: "Khulna",
-                  },
-                ]}
-                keyType="additionalInformation"
-              />
-              <PropertyPlan
-                info={input.propertyPlan}
-                handleChange={handleKeyValueChange}
-                handleAddOrDelete={handleAddOrDelete}
-              />
-
-              <div className="homec-submit-form mg-top-40">
-                <h4 className="homec-submit-form__title">
-                  SEO Information and Others
-                </h4>
-                <div className="homec-submit-form__inner">
-                  <div className="row">
-                    <div className="col-lg-6 col-md-6 col-12">
-                      {/* Single Form Element   */}
-                      <PropertyTextInput
-                        title="SEO Title*"
-                        placeholder="Type Here"
-                        name="title"
-                        value={input.seoInfo.title}
-                        handleChange={handleSEO}
-                      />
-                      {/* Single Form Element   */}
-                      <PropertyTextAreaV2
-                        title="SEO Description"
-                        value={input.seoInfo.desc}
-                        handleChange={handleSEO}
-                        name="desc"
-                        placeHolder="Type Here"
-                        sizeFull={true}
-                      />
-                    </div>
-                    <div className="col-lg-6 col-md-6 col-12">
-                      <div className="homeco-switcher-group mg-top-20">
-                        <div className="homeco-switcher-group__single">
-                          {/* Single Switcher  */}
-                          <SwitcherBtn
-                            title="Status"
-                            name="status"
-                            isChecked={input.seoInfo.status}
-                            handleChange={handleSEO}
-                          />
-                          <SwitcherBtn
-                            title="Urgent Property"
-                            isChecked={input.seoInfo.urgentProperty}
-                            name="urgentProperty"
-                            handleChange={handleSEO}
-                          />
-
-                          {/* End Single Switcher  */}
-                        </div>
-                        <div className="homeco-switcher-group__single">
-                          <SwitcherBtn
-                            title="Featured"
-                            name="featured"
-                            isChecked={input.seoInfo.featured}
-                            handleChange={handleSEO}
-                          />
-                          <SwitcherBtn
-                            title="Top Property"
-                            name="topProperty"
-                            isChecked={input.seoInfo.topProperty}
-                            handleChange={handleSEO}
-                          />
-                        </div>
+                  <div className={`property-sidebar__single `}>
+                    <div className="mt-4">
+                      <h4 className="property-sidebar__title">Property type</h4>
+                      <div className="form-group">
+                        <select
+                          className="form-select form-select-md mb-3"
+                          aria-label=".form-select-lg example"
+                          {...register("propertyType")}
+                        >
+                          {propertyType.map((type, index) => (
+                            <option
+                              value={type.id}
+                              key={type.name}
+                              selected={index === 0}
+                            >
+                              {type.name}
+                            </option>
+                          ))}
+                        </select>
                       </div>
+                    </div>
+                  </div>
+
+                  {/* Single Form Element  */}
+
+                  <div className="mg-top-20">
+                    <h4 className="homec-submit-form__heading">Description</h4>
+                    <div className="form-group homec-form-input">
+                      <CKEditor
+                        editor={ClassicEditor}
+                        data={description}
+                        onChange={(event: any, editor: any) => {
+                          const data = editor.getData();
+                          setDescription(data);
+                        }}
+                      />
                     </div>
                   </div>
                 </div>
               </div>
+              <div className="homec-submit-form">
+                <h4 className="homec-submit-form__title">Aminities</h4>
+                <div className="homec-submit-form__inner"></div>
+                <div className="row justify-content-center mb-5">
+                  <div
+                    className="col-md-6  "
+                    style={{
+                      padding: "0px 60px",
+                    }}
+                  >
+                    {aminities
+                      .slice(0, Math.ceil(aminities.length / 2))
+                      .map((item) => {
+                        return (
+                          <div key={item.id} className="form-check">
+                            <input
+                              {...register("aminities")}
+                              className="form-check-input"
+                              type="checkbox"
+                              value={convertNameToCode(item.name)}
+                              id={item.name}
+                            />
+                            <label
+                              className="form-check-label"
+                              htmlFor={item.name}
+                            >
+                              {item.name}
+                            </label>
+                          </div>
+                        );
+                      })}
+                  </div>
+                  <div
+                    className="col-md-6"
+                    style={{
+                      padding: "0px 60px",
+                    }}
+                  >
+                    {aminities
+                      .slice(Math.ceil(aminities.length / 2))
+                      .map((item) => {
+                        return (
+                          <div key={item.id} className="form-check">
+                            <input
+                              {...register("aminities")}
+                              className="form-check-input"
+                              type="checkbox"
+                              value={convertNameToCode(item.name)}
+                              id={item.name}
+                            />
+                            <label
+                              className="form-check-label"
+                              htmlFor={item.name}
+                            >
+                              {item.name}
+                            </label>
+                          </div>
+                        );
+                      })}
+                  </div>
+                </div>
+              </div>
+              <div className="homec-submit-form">
+                <h4 className="homec-submit-form__title">Property Location</h4>
+                <div className="homec-submit-form__inner">
+                  <div className="row">
+                    <Places />
+                  </div>
+
+                  {/* Single Form Element  */}
+                </div>
+              </div>
+              <div className="homec-submit-form">
+                <h4 className="homec-submit-form__title">Property Media</h4>
+                <div className="homec-submit-form__inner">
+                  <div className="row">
+                    <div className="mb-3">
+                      <label htmlFor="thumnails" className="form-label">
+                        Pick 3 files for thumnails*
+                      </label>
+                      <input
+                        className="form-control"
+                        type="file"
+                        id="thumnails"
+                        accept=".png, .jpg, .jpeg"
+                        multiple
+                        {...register("thumbs")}
+                      />
+                      <span style={{ color: "red" }}>
+                        {errors.thumbs?.message}
+                      </span>
+                      <Carousel
+                        swipeable={false}
+                        responsive={responsiveHeroSlider}
+                        ssr={true} // means to render carousel on server-side.
+                        infinite={true}
+                        autoPlaySpeed={1000}
+                        keyBoardControl={true}
+                        containerClass="carousel-container"
+                        dotListClass="custom-dot-list-style"
+                        arrows={true}
+                        itemClass="carousel-item-padding-40-px mt-3"
+                      >
+                        {Object.values(thumbFiles)?.map(
+                          (item: File, index: number) => {
+                            const url = URL.createObjectURL(item);
+                            return (
+                              <div key={index}>
+                                <img
+                                  style={{
+                                    width: "100%",
+                                    objectFit: "cover",
+                                    objectPosition: "center",
+                                    maxHeight: "500px",
+                                    height: "500px",
+                                  }}
+                                  src={url}
+                                  alt={`Image ${index}`}
+                                />
+                              </div>
+                            );
+                          }
+                        )}
+                      </Carousel>
+                    </div>
+                  </div>
+                  {/*Khúc này thêm  */}
+                  {/* <div className="mb-3">
+                      <label htmlFor="imageDetails" className="form-label">
+                        Pick 10 files for details*
+                      </label>
+                      <input
+                        className="form-control"
+                        type="file"
+                        id="imageDetails"
+                        multiple
+                        accept=".png, .jpg, .jpeg"
+                        {...register("imageDetails")}
+                      />
+                      <span style={{ color: "red" }}>
+                        {errors.imageDetails?.message}
+                      </span>
+                      <Carousel
+                        swipeable={false}
+                        responsive={responsiveCustomerReviewSlider}
+                        ssr={true} // means to render carousel on server-side.
+                        infinite={true}
+                        autoPlaySpeed={1000}
+                        keyBoardControl={true}
+                        containerClass="carousel-container"
+                        dotListClass="custom-dot-list-style"
+                        arrows={true}
+                        itemClass="carousel-item-padding-40-px mt-3"
+                      >
+                        {Object.values(imageDetails)?.map(
+                          (item: File, index: number) => {
+                            const url = URL.createObjectURL(item);
+                            return (
+                              <div key={index}>
+                                <img
+                                  style={{
+                                    width: "100%",
+                                    objectFit: "cover",
+                                    objectPosition: "center",
+                                    height: "200px",
+                                  }}
+                                  src={url}
+                                  alt={`Image ${index}`}
+                                />
+                              </div>
+                            );
+                          }
+                        )}
+                      </Carousel>
+                    </div>
+                    <div className="mb-3">
+                      <label htmlFor="video" className="form-label">
+                        Pick 1 files for overview your property*
+                      </label>
+                      <input
+                        className="form-control"
+                        type="file"
+                        id="video"
+                        accept="video/**"
+                        {...register("video")}
+                      />
+                      <span style={{ color: "red" }}>
+                        {errors.video?.message}
+                      </span>
+                      {Object.keys(video).length > 0 && (
+                        <video src={URL.createObjectURL(video["0"])} controls />
+                      )}
+                    </div>
+                  </div> */}
+                </div>
+              </div>
+              <div className="homec-submit-form">
+                <h4 className="homec-submit-form__title">Property Documents</h4>
+                <div className="homec-submit-form__inner">
+                  {/* <div className="row">
+                    <div className="mb-3">
+                      <label htmlFor="documents" className="form-label">
+                        Multiple files for documents
+                      </label>
+                      <input
+                        className="form-control"
+                        type="file"
+                        id="documents"
+                        accept="application/msword, application/vnd.ms-excel,application/pdf"
+                        multiple
+                        {...register("documents")}
+                      />
+                      <span style={{ color: "red" }}>
+                        {errors.documents?.message}
+                      </span>
+                    </div>
+                  </div> */}
+                </div>
+              </div>
+
               <div className="row">
                 <div className="col-12 d-flex justify-content-end mg-top-40">
                   <button type="submit" className="homec-btn homec-btn__second">

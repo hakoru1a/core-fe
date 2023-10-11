@@ -24,7 +24,7 @@ function SubmitProperty() {
         <Breadcrumbs
           title="Submit Property"
           titlePosition="bottom"
-          background="url(img/bread-overlay.jpg)"
+          background="url(/img/bread-overlay.jpg)"
         >
           <HistoryLinks link="/home" text="Home" />
           <HistoryLinks

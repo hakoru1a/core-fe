@@ -23,7 +23,7 @@ function FloorDetails({ isActive }: any) {
           {/* <!-- Single Accordion --> */}
           <Accorodion
             name="1st"
-            img="img/floor-plane-img.png"
+            img="/img/floor-plane-img.png"
             text="Contrary to popular belief, Lorem Ipsum is not simply random
                     text. It has roots in a piece of classical Latin literature
                     from 45 BC, making it over 2000 years old. Richard
@@ -33,7 +33,7 @@ function FloorDetails({ isActive }: any) {
           />
           <Accorodion
             name="2nd"
-            img="img/floor-plane-img.png"
+            img="/img/floor-plane-img.png"
             text="Contrary to popular belief, Lorem Ipsum is not simply random
                   text. It has roots in a piece of classical Latin literature
                   from 45 BC, making it over 2000 years old. Richard
@@ -43,7 +43,7 @@ function FloorDetails({ isActive }: any) {
           />
           <Accorodion
             name="3rd"
-            img="img/floor-plane-img.png"
+            img="/img/floor-plane-img.png"
             text="Contrary to popular belief, Lorem Ipsum is not simply random
                 text. It has roots in a piece of classical Latin literature
                 from 45 BC, making it over 2000 years old. Richard
@@ -53,7 +53,7 @@ function FloorDetails({ isActive }: any) {
           />
           <Accorodion
             name="4th"
-            img="img/floor-plane-img.png"
+            img="/img/floor-plane-img.png"
             text="Contrary to popular belief, Lorem Ipsum is not simply random
               text. It has roots in a piece of classical Latin literature
               from 45 BC, making it over 2000 years old. Richard

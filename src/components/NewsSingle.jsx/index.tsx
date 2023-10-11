@@ -44,9 +44,9 @@ function NewsSingle() {
               <div className="col-lg-8 col-12 mg-top-30">
                 <BlogMetaList
                   info={[
-                    { img: "img/user-icon.svg", link: "#", name: "By Admin" },
-                    { img: "img/calendar.svg", name: "31 May 2022" },
-                    { img: "img/comment.svg", name: "20 Comment" },
+                    { img: "/img/user-icon.svg", link: "#", name: "By Admin" },
+                    { img: "/img/calendar.svg", name: "31 May 2022" },
+                    { img: "/img/comment.svg", name: "20 Comment" },
                   ]}
                 />
                 <BlogDetails />

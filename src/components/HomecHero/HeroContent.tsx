@@ -7,7 +7,7 @@ function HeroContent() {
         Get your
         <span
           className="homec-hero__title--focus"
-          style={{ backgroundImage: "url('img/shape-2.svg')" }}
+          style={{ backgroundImage: "url('/img/shape-2.svg')" }}
         >
           Property
         </span>

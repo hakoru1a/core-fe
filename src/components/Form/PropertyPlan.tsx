@@ -39,7 +39,7 @@ function PropertyPlan({ info, handleChange, handleAddOrDelete }: any) {
                   className="homec-image-video-upload__label"
                   htmlFor="input-video1"
                 >
-                  <img src="img/upload-file-2.svg" alt="#" />
+                  <img src="/img/upload-file-2.svg" alt="#" />
                   <span className="homec-image-video-upload__title homec-image-video-upload__title--v2">
                     Drag & Drop or{" "}
                     <span className="homec-primary-color">Choose File</span> to
@@ -93,7 +93,7 @@ function PropertyPlan({ info, handleChange, handleAddOrDelete }: any) {
                   className="homec-form-add__button"
                   onClick={() => handleAddOrDelete("add", "", "propertyPlan")}
                 >
-                  <img src="img/plus-icon.svg" />
+                  <img src="/img/plus-icon.svg" />
                 </button>
               </div>
             </div>

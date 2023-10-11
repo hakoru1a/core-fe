@@ -6,17 +6,17 @@ function AboutV2() {
       <div className="homec-shape">
         <img
           className="homec-shape-single homec-shape-1"
-          src="img/anim-shape-1.svg"
+          src="/img/anim-shape-1.svg"
           alt="#"
         />
         <img
           className="homec-shape-single homec-shape-2"
-          src="img/anim-shape-2.svg"
+          src="/img/anim-shape-2.svg"
           alt="#"
         />
         <img
           className="homec-shape-single homec-shape-3"
-          src="img/anim-shape-3.svg"
+          src="/img/anim-shape-3.svg"
           alt="#"
         />
       </div>
@@ -50,7 +50,7 @@ function AboutV2() {
                 <div className="homec-section__shape">
                   <span
                     className="homec-section__badge homec-section__badge--shape"
-                    style={{ backgroundImage: "url('img/section-shape.svg')" }}
+                    style={{ backgroundImage: "url('/img/section-shape.svg')" }}
                     data-aos="fade-down"
                     data-aos-delay="300"
                   >

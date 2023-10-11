@@ -7,14 +7,14 @@ function LatestProperty() {
   return (
     <section
       className="homec-properties homec-bg-cover pd-top-120 pd-btm-120"
-      style={{ backgroundImage: "url('img/bg-shape-four.svg')" }}
+      style={{ backgroundImage: "url('/img/bg-shape-four.svg')" }}
     >
       <div className="homec-shape">
         <div className="homec-shape-single homec-shape-7">
-          <img src="img/anim-shape-4.svg" alt="#" />
+          <img src="/img/anim-shape-4.svg" alt="#" />
         </div>
         <div className="homec-shape-single homec-shape-8">
-          <img src="img/anim-shape-5.svg" alt="#" />
+          <img src="/img/anim-shape-5.svg" alt="#" />
         </div>
       </div>
       <div className="container">

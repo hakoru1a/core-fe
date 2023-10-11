@@ -17,7 +17,7 @@ function ImageCard({ price, duration, title, text, img }: any) {
         <div className="homec-image-gallery__content">
           <h3 className="homec-image-gallery__title">{title}</h3>
           <p className="homec-image-gallery__text">
-            <img src="img/map-icon.svg" alt="#" />
+            <img src="/img/map-icon.svg" alt="#" />
             {text}
           </p>
         </div>

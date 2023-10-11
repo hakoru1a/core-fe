@@ -11,7 +11,7 @@ function LatestPropertyV3() {
       <div className="homec-property-separate homec-bg-primary-color">
         <div
           className="homec-bg homec-bg__opacity"
-          style={{ backgroundImage: "url(img/features-list-bg.svg)" }}
+          style={{ backgroundImage: "url(/img/features-list-bg.svg)" }}
         ></div>
       </div>
       <div className="container">

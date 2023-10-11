@@ -10,7 +10,7 @@ function FaqSection() {
     <section
       className="homec-bg-cover pd-top-90 pd-btm-120"
       style={{
-        backgroundImage: "url('img/bg-shape-five.svg')",
+        backgroundImage: "url('/img/bg-shape-five.svg')",
         width: "100%",
         overflow: "hidden",
       }}
@@ -26,7 +26,7 @@ function FaqSection() {
               <div className="homec-section__shape">
                 <span
                   className="homec-section__badge homec-section__badge--shape homec-section__badge--shape--v2"
-                  style={{ backgroundImage: "url('img/shape-3.svg')" }}
+                  style={{ backgroundImage: "url('/img/shape-3.svg')" }}
                 >
                   FAQ
                 </span>
@@ -92,7 +92,7 @@ function FaqSection() {
             <div className="homec-support-img">
               <img src="https://placehold.co/615x665" alt="#" />
               <div className="homec-support-img__content">
-                <img src="img/support-icon-white.svg" alt="#" />
+                <img src="/img/support-icon-white.svg" alt="#" />
                 <h4 className="homec-support-img__title">
                   24/7 Support <span>Have any Questions Contact Us?</span>
                 </h4>

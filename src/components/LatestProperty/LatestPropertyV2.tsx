@@ -10,7 +10,7 @@ function LatestPropertyV2() {
     <div>
       <section
         className="homec-properties homec-bg-cover homec-bg-third-color pd-top-90 pd-btm-120"
-        style={{ backgroundImage: "url('img/bg-shape-one.svg')" }}
+        style={{ backgroundImage: "url('/img/bg-shape-one.svg')" }}
       >
         <div className="container">
           <div className="row">

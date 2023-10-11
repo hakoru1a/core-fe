@@ -40,7 +40,7 @@ function MobileMenu({ handleSidebar, show }: MobileMenu) {
           <div className="offcanvas-logo">
             <div className="homec-header__logo">
               <Link to="/">
-                <img src="img/logo.png" alt="#" />
+                <img src="/img//logo.png" alt="#" />
               </Link>
             </div>
           </div>

@@ -30,11 +30,11 @@ function HeroSlider() {
           pricePeriod="month"
           title="Modern House With Pool"
           propertyText="1901 Thornridge Cir. Shiloh, Hawaii 81063"
-          propertyImg="img/location-icon2.svg"
+          propertyImg="/img/location-icon2.svg"
           propertyList={[
-            { name: "3 Room", img: "img/room-icon2.svg" },
-            { name: "2 Bathroom", img: "img/bath-icon2.svg" },
-            { name: "5x9 m2", img: "img/size-icon2.svg" },
+            { name: "3 Room", img: "/img/room-icon2.svg" },
+            { name: "2 Bathroom", img: "/img/bath-icon2.svg" },
+            { name: "5x9 m2", img: "/img/size-icon2.svg" },
           ]}
         />
         <HeroSliderSlide
@@ -44,11 +44,11 @@ function HeroSlider() {
           pricePeriod="month"
           title="Diamond Mn Apartment"
           propertyText="1901 Thornridge Cir. Shiloh, Hawaii 81063"
-          propertyImg="img/location-icon2.svg"
+          propertyImg="/img/location-icon2.svg"
           propertyList={[
-            { name: "3 Room", img: "img/room-icon2.svg" },
-            { name: "2 Bathroom", img: "img/bath-icon2.svg" },
-            { name: "5x9 m2", img: "img/size-icon2.svg" },
+            { name: "3 Room", img: "/img/room-icon2.svg" },
+            { name: "2 Bathroom", img: "/img/bath-icon2.svg" },
+            { name: "5x9 m2", img: "/img/size-icon2.svg" },
           ]}
         />
         <HeroSliderSlide
@@ -58,11 +58,11 @@ function HeroSlider() {
           pricePeriod="month"
           title="Northwest Office Space"
           propertyText="1901 Thornridge Cir. Shiloh, Hawaii 81063"
-          propertyImg="img/location-icon2.svg"
+          propertyImg="/img/location-icon2.svg"
           propertyList={[
-            { name: "3 Room", img: "img/room-icon2.svg" },
-            { name: "2 Bathroom", img: "img/bath-icon2.svg" },
-            { name: "5x9 m2", img: "img/size-icon2.svg" },
+            { name: "3 Room", img: "/img/room-icon2.svg" },
+            { name: "2 Bathroom", img: "/img/bath-icon2.svg" },
+            { name: "5x9 m2", img: "/img/size-icon2.svg" },
           ]}
         />
       </Carousel>

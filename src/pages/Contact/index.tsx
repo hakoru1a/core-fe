@@ -35,7 +35,7 @@ function Contact() {
               <div className="col-lg-4">
                 <div
                   className="homec-property-ag homec-bg-cover"
-                  style={{ backgroundImage: "url('img/property-ag-bg.svg')" }}
+                  style={{ backgroundImage: "url('/img/property-ag-bg.svg')" }}
                 >
                   <h3 className="homec-property-ag__title">Contact Now</h3>
                   {/* End Property Profile */}
