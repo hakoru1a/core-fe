@@ -81,8 +81,6 @@ export class Http {
             error.message ||
             data?.data?.message;
           if (data) {
-            console.log(data);
-
             const keys = Object.keys(data);
             // console.log(keys);
 

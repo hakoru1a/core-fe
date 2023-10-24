@@ -77,6 +77,13 @@ function PropertyAgents({ image, name, position }: any) {
             <span>Send Message Now</span>
           </button>
         </form>
+        <button
+          type="submit"
+          className="homec-btn homec-btn__second homec-property-ag__button"
+          style={{ zIndex: "0" }}
+        >
+          <span>Emit new appointment</span>
+        </button>
       </div>
       {/* End Property Agent Card */}
     </div>

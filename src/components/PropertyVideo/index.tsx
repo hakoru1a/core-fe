@@ -2,7 +2,14 @@ import ProtoTypes from "prop-types";
 import { useState } from "react";
 import Modal from "react-modal";
 
-function PropertyVideo({ isActive, text, img }: any) {
+interface Props {
+  isActive: boolean;
+  text: string;
+  img: string;
+  src?: string;
+}
+
+function PropertyVideo({ isActive, text, img, src }: Props) {
   const [videoModal, setVideoModal] = useState(false);
   const customStyles = {
     content: {
@@ -50,7 +57,10 @@ function PropertyVideo({ isActive, text, img }: any) {
                 <iframe
                   width="460"
                   height="230"
-                  src="//www.youtube.com/embed/FzcfZyEhOoI?autoplay=1&amp;cc_load_policy=1&amp;color=null&amp;controls=1&amp;disablekb=0&amp;enablejsapi=0&amp;end=null&amp;fs=1&amp;h1=null&amp;iv_load_policy=1&amp;loop=0&amp;modestbranding=null&amp;mute=0&amp;origin=null&amp;playsinline=null&amp;rel=0&amp;showinfo=1&amp;start=0&amp;wmode=transparent&amp;theme=dark&amp;nocookie=false"
+                  src={
+                    src ||
+                    "//www.youtube.com/embed/FzcfZyEhOoI?autoplay=1&amp;cc_load_policy=1&amp;color=null&amp;controls=1&amp;disablekb=0&amp;enablejsapi=0&amp;end=null&amp;fs=1&amp;h1=null&amp;iv_load_policy=1&amp;loop=0&amp;modestbranding=null&amp;mute=0&amp;origin=null&amp;playsinline=null&amp;rel=0&amp;showinfo=1&amp;start=0&amp;wmode=transparent&amp;theme=dark&amp;nocookie=false"
+                  }
                   frameBorder="0"
                   // allowfullscreen="true"
                   tabIndex={-1}

@@ -1,5 +1,5 @@
 import type { RegisterOptions, UseFormRegister } from "react-hook-form";
-
+import { useRef, useEffect } from "react";
 interface Props {
   errorMessage?: string;
   register: UseFormRegister<any>;
@@ -36,10 +36,10 @@ function PropertyTextInputV2({
         </h4>
         <div className="form-group homec-form-input">
           <input
+            {...register(name)}
             type={type ? type : "text"}
             placeholder={placeholder}
             defaultValue={value}
-            {...register(name)}
           />
           <span
             style={{

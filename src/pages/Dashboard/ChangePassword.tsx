@@ -1,13 +1,13 @@
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
-import PropertyTextInput from "../../components/Form/PropertyTextInput";
+import { toast } from "react-toastify";
+import userApi from "../../apis/user.api";
+import PropertyTextInputV2 from "../../components/Form/PropertyTextInputV2";
+import Preloader from "../../components/Loader";
+import { useAuth } from "../../hooks/useAuth";
 import { ChangePasswordType } from "../../types/user.type";
 import { Schema, schema } from "../../utils/rules";
-import { useMutation } from "@tanstack/react-query";
-import userApi from "../../apis/user.api";
-import { useAuth } from "../../hooks/useAuth";
-import Preloader from "../../components/Loader";
-import { toast } from "react-toastify";
 
 export type FormData = Pick<
   Schema,
@@ -69,7 +69,7 @@ function ChangePassword() {
                 <div className="col-12">
                   <div className="form-group homec-form-input">
                     <div className="form-group__input">
-                      <PropertyTextInput
+                      <PropertyTextInputV2
                         title="Pre-Password*"
                         margin="-10px"
                         name="previousPassword"
@@ -84,7 +84,7 @@ function ChangePassword() {
                 <div className="col-12">
                   <div className="form-group homec-form-input">
                     <div className="form-group__input">
-                      <PropertyTextInput
+                      <PropertyTextInputV2
                         title="Password*"
                         margin="-10px"
                         name="password"
@@ -99,7 +99,7 @@ function ChangePassword() {
                 <div className="col-12">
                   <div className="form-group homec-form-input">
                     <div className="form-group__input">
-                      <PropertyTextInput
+                      <PropertyTextInputV2
                         title="Confirm Pasword*"
                         placeholder="********"
                         margin="-10px"

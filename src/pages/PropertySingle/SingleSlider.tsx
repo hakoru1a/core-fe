@@ -1,8 +1,15 @@
 import { responsiveSmallAgentsSlider } from "../../utils/responsiveSlider";
 import ImageCard from "../../components/Cards/ImageCard";
 import Carousel from "react-multi-carousel";
+import { Media } from "../../types/property.type";
 
-function SingleSlider() {
+interface Props {
+  images: Media[];
+  address: string;
+  title: string;
+}
+
+function SingleSlider({ images, address, title }: Props) {
   return (
     <Carousel
       responsive={responsiveSmallAgentsSlider}
@@ -21,30 +28,9 @@ function SingleSlider() {
       <ImageCard
         price="3,976"
         duration="Month"
-        title="Modern House With Pool"
-        text="1901 Thornridge Cir. Shiloh, Hawaii 81063"
-        img="https://placehold.co/1170x600"
-      />
-      <ImageCard
-        price="3,976"
-        duration="Month"
-        title="Affordable Green Villa House"
-        text="1901 Thornridge Cir. Shiloh, Hawaii 81063"
-        img="https://placehold.co/1170x600"
-      />
-      <ImageCard
-        price="3,976"
-        duration="Month"
-        title="Modern House With Pool"
-        text="1901 Thornridge Cir. Shiloh, Hawaii 81063"
-        img="https://placehold.co/1170x600"
-      />
-      <ImageCard
-        price="3,976"
-        duration="Month"
-        title="Affordable Green Villa House"
-        text="1901 Thornridge Cir. Shiloh, Hawaii 81063"
-        img="https://placehold.co/1170x600"
+        title={title}
+        text={address || "TPHCM"}
+        img={images?.[0]?.url || "https://placehold.co/1170x600"}
       />
     </Carousel>
   );

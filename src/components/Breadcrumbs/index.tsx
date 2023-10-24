@@ -13,7 +13,7 @@ function Breadcrumbs({
       style={{
         backgroundImage: background
           ? background
-          : "url(https://placehold.co/1920x455)",
+          : "url(https://cdn.pixabay.com/photo/2017/12/26/02/54/ho-chi-minh-3039579_1280.jpg)",
       }}
     >
       {overlay && <div className="homec-overlay"></div>}

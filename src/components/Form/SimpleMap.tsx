@@ -14,7 +14,7 @@ import usePlacesAutocomplete, {
 } from "use-places-autocomplete";
 import "./custom.css";
 import { useDispatch } from "react-redux";
-import { setLocation } from "../../redux/location.slice";
+import { setLocation } from "../../redux/slice/location.slice";
 export default function Places() {
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: "AIzaSyBKRMwfqqkhEA9O7_AdedaHpDmiREJYiQ4",

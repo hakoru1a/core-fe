@@ -12,13 +12,14 @@ const user: User = {
   address: "",
   phone: "",
   occupation: "",
+  times: 0,
 };
 
 const userSlice = createSlice({
   name: "user",
   initialState: getProfileFromLS() || user,
   reducers: {
-    setGlobalUser(_, action: PayloadAction<User>) {
+    setGlobalUser(_, action: PayloadAction<User | undefined>) {
       return {
         ...action.payload,
       };

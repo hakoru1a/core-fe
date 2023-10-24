@@ -59,7 +59,10 @@ function PropertyGrid({ data, currentPage = 1, handelPage, totalPage }: Props) {
                         (wishlistProperty: Property) =>
                           wishlistProperty.id === property.id
                       )}
-                      img="https://placehold.co/350x220"
+                      img={
+                        property.medias[0]?.url ||
+                        "https://placehold.co/350x220"
+                      }
                       // likeLink={property.likeLink}
                       detailsLink={`/property/${property.id}`}
                       agentName={property.customer?.fullname}

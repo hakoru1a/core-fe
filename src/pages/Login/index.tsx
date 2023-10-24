@@ -6,11 +6,12 @@ import { Link, useNavigate } from "react-router-dom";
 import authApi from "../../apis/auth.api";
 import userApi from "../../apis/user.api";
 import WelcomeCard from "../../components/Cards/WelcomeCard";
-import PropertyTextInput from "../../components/Form/PropertyTextInput";
+import PropertyTextInputV2 from "../../components/Form/PropertyTextInputV2";
 import Preloader from "../../components/Loader";
 import { setGlobalUser } from "../../redux/slice/user.slice";
 import { setProfileToLS } from "../../utils/auth";
 import { Schema, schema } from "../../utils/rules";
+import { toast } from "react-toastify";
 type FormData = Pick<Schema, "username" | "password">;
 const registerSchema = schema.pick(["username", "password"]);
 
@@ -32,9 +33,11 @@ function Login() {
       } = res.data;
       if (accessToken) {
         const { data } = await userApi.getCurrentUser();
-        setProfileToLS(data.data);
-        dispatch(setGlobalUser(data.data));
-        navigate("/");
+        if (data.data) {
+          setProfileToLS(data.data);
+          dispatch(setGlobalUser(data.data));
+          navigate("/");
+        } else toast.error("Sai tài khoản hoặc mật khẩu");
       }
     },
     onError: (error: Error) => {
@@ -72,7 +75,7 @@ function Login() {
                     method="post"
                     onSubmit={onSubmit}
                   >
-                    <PropertyTextInput
+                    <PropertyTextInputV2
                       title="Username*"
                       name="username"
                       placeholder="demo3243@gmail.com"
@@ -80,7 +83,7 @@ function Login() {
                       register={register}
                       errorMessage={errors.username?.message}
                     />
-                    <PropertyTextInput
+                    <PropertyTextInputV2
                       title="Password*"
                       name="password"
                       placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;"

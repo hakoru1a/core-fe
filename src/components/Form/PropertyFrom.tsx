@@ -4,7 +4,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -17,11 +16,13 @@ import useQueryParams from "../../hooks/useQueryParams";
 import { setGlobalUser } from "../../redux/slice/user.slice";
 import { RootState } from "../../store";
 import { setProfileToLS } from "../../utils/auth";
-import { responsiveHeroSlider } from "../../utils/responsiveSlider";
 import { PropertySchema, propertySchema } from "../../utils/rules";
 import { convertNameToCode } from "../../utils/utils";
 import Preloader from "../Loader";
+import DocumentCard from "./DocmentCard";
+import MediaCard from "./MediaCard";
 import PropertyTextInputV2 from "./PropertyTextInputV2";
+import { Property } from "../../types/property.type";
 import Places from "./SimpleMap";
 // import Places from "./SimpleMap";
 
@@ -29,33 +30,32 @@ type FormData = PropertySchema;
 const schema = propertySchema;
 function PropertyFrom() {
   const user = useAuth();
+  const [currentProperty, setCurrentProperty] = useState<Property>({});
+  const [medias, setMedias] = useState<any>([]);
+  const [isSubmitProperty, setIsSubmitProperty] = useState<boolean>(false);
+  console.log(medias);
+  const [documents, setDocuments] = useState<File[]>([]);
   const params = useQueryParams();
   const dispatch = useDispatch();
   const {
     register,
     handleSubmit,
     formState: { errors },
-    watch,
   } = useForm<FormData>({
     resolver: yupResolver(schema),
     defaultValues: {
-      thumbs: {},
-      // imageDetails: {},
-      // video: {},
       rentPeriod: params?.purpose === "for-rent" ? undefined : "0",
     },
   });
-  const thumbFiles: any = watch("thumbs");
-  // const imageDetails: any = watch("imageDetails");
   // const video: any = watch("video");
-  const navigate = useNavigate();
   const { mutate, isLoading } = useMutation({
     mutationFn: (data) => propertyApi.registerProperty(data),
-    onSuccess: async () => {
+    onSuccess: async (res) => {
       const { data } = await userApi.getCurrentUser();
       setProfileToLS(data.data);
       dispatch(setGlobalUser(data.data));
-      navigate("/dashboard");
+      setIsSubmitProperty(true);
+      setCurrentProperty(res.data.data);
       toast.success("Đăng nhà thành công chờ duyệt nhà");
     },
   });
@@ -67,8 +67,6 @@ function PropertyFrom() {
     const mySubmit = {
       ...data,
       description,
-      medias: [...thumbFiles],
-      // medias: [...thumbFiles, ...imageDetails, ...video],
       latitude: lat || "106.6296638",
       longitude: lng || "10.8230989",
       address: address || "TPHCM",
@@ -77,9 +75,11 @@ function PropertyFrom() {
     };
     // delete mySubmit.imageDetails;
     // delete mySubmit.thumbs;
+    toast.success("Quá trình mất vài phút");
     console.log(mySubmit);
     mutate(mySubmit);
   });
+
   if (isLoading) {
     return <Preloader />;
   }
@@ -275,169 +275,102 @@ function PropertyFrom() {
               <div className="homec-submit-form">
                 <h4 className="homec-submit-form__title">Property Location</h4>
                 <div className="homec-submit-form__inner">
-                  <div className="row">
-                    <Places />
-                  </div>
+                  <div className="row">{/* <Places /> */}</div>
 
                   {/* Single Form Element  */}
                 </div>
               </div>
-              <div className="homec-submit-form">
-                <h4 className="homec-submit-form__title">Property Media</h4>
-                <div className="homec-submit-form__inner">
-                  <div className="row">
-                    <div className="mb-3">
-                      <label htmlFor="thumnails" className="form-label">
-                        Pick 3 files for thumnails*
-                      </label>
-                      <input
-                        className="form-control"
-                        type="file"
-                        id="thumnails"
-                        accept=".png, .jpg, .jpeg"
-                        multiple
-                        {...register("thumbs")}
-                      />
-                      <span style={{ color: "red" }}>
-                        {errors.thumbs?.message}
-                      </span>
-                      <Carousel
-                        swipeable={false}
-                        responsive={responsiveHeroSlider}
-                        ssr={true} // means to render carousel on server-side.
-                        infinite={true}
-                        autoPlaySpeed={1000}
-                        keyBoardControl={true}
-                        containerClass="carousel-container"
-                        dotListClass="custom-dot-list-style"
-                        arrows={true}
-                        itemClass="carousel-item-padding-40-px mt-3"
-                      >
-                        {Object.values(thumbFiles)?.map(
-                          (item: File, index: number) => {
-                            const url = URL.createObjectURL(item);
-                            return (
-                              <div key={index}>
-                                <img
-                                  style={{
-                                    width: "100%",
-                                    objectFit: "cover",
-                                    objectPosition: "center",
-                                    maxHeight: "500px",
-                                    height: "500px",
-                                  }}
-                                  src={url}
-                                  alt={`Image ${index}`}
-                                />
-                              </div>
-                            );
-                          }
-                        )}
-                      </Carousel>
-                    </div>
-                  </div>
-                  {/*Khúc này thêm  */}
-                  {/* <div className="mb-3">
-                      <label htmlFor="imageDetails" className="form-label">
-                        Pick 10 files for details*
-                      </label>
-                      <input
-                        className="form-control"
-                        type="file"
-                        id="imageDetails"
-                        multiple
-                        accept=".png, .jpg, .jpeg"
-                        {...register("imageDetails")}
-                      />
-                      <span style={{ color: "red" }}>
-                        {errors.imageDetails?.message}
-                      </span>
-                      <Carousel
-                        swipeable={false}
-                        responsive={responsiveCustomerReviewSlider}
-                        ssr={true} // means to render carousel on server-side.
-                        infinite={true}
-                        autoPlaySpeed={1000}
-                        keyBoardControl={true}
-                        containerClass="carousel-container"
-                        dotListClass="custom-dot-list-style"
-                        arrows={true}
-                        itemClass="carousel-item-padding-40-px mt-3"
-                      >
-                        {Object.values(imageDetails)?.map(
-                          (item: File, index: number) => {
-                            const url = URL.createObjectURL(item);
-                            return (
-                              <div key={index}>
-                                <img
-                                  style={{
-                                    width: "100%",
-                                    objectFit: "cover",
-                                    objectPosition: "center",
-                                    height: "200px",
-                                  }}
-                                  src={url}
-                                  alt={`Image ${index}`}
-                                />
-                              </div>
-                            );
-                          }
-                        )}
-                      </Carousel>
-                    </div>
-                    <div className="mb-3">
-                      <label htmlFor="video" className="form-label">
-                        Pick 1 files for overview your property*
-                      </label>
-                      <input
-                        className="form-control"
-                        type="file"
-                        id="video"
-                        accept="video/**"
-                        {...register("video")}
-                      />
-                      <span style={{ color: "red" }}>
-                        {errors.video?.message}
-                      </span>
-                      {Object.keys(video).length > 0 && (
-                        <video src={URL.createObjectURL(video["0"])} controls />
-                      )}
-                    </div>
-                  </div> */}
-                </div>
-              </div>
-              <div className="homec-submit-form">
-                <h4 className="homec-submit-form__title">Property Documents</h4>
-                <div className="homec-submit-form__inner">
-                  {/* <div className="row">
-                    <div className="mb-3">
-                      <label htmlFor="documents" className="form-label">
-                        Multiple files for documents
-                      </label>
-                      <input
-                        className="form-control"
-                        type="file"
-                        id="documents"
-                        accept="application/msword, application/vnd.ms-excel,application/pdf"
-                        multiple
-                        {...register("documents")}
-                      />
-                      <span style={{ color: "red" }}>
-                        {errors.documents?.message}
-                      </span>
-                    </div>
-                  </div> */}
-                </div>
-              </div>
 
-              <div className="row">
+              <div className="row mb-5">
                 <div className="col-12 d-flex justify-content-end mg-top-40">
-                  <button type="submit" className="homec-btn homec-btn__second">
+                  <button
+                    disabled={isSubmitProperty}
+                    type="submit"
+                    className="homec-btn homec-btn__second"
+                  >
                     <span>Submit Property Now</span>
                   </button>
                 </div>
               </div>
             </form>
+            {isSubmitProperty && Object.keys(currentProperty).length > 0 && (
+              <>
+                <form>
+                  <div className="homec-submit-form">
+                    <h4 className="homec-submit-form__title">Property Media</h4>
+                    <div className="homec-submit-form__inner">
+                      <div className="row">
+                        <div className="mb-3">
+                          <input
+                            className="form-control"
+                            type="file"
+                            id="imageDetails"
+                            multiple
+                            value={""}
+                            content=""
+                            accept=".png, .jpg, .jpeg, .mp4, .mov, .avi, .mkv, video/*"
+                            onChange={(e) => {
+                              const files = Array.from(e.currentTarget.files);
+                              setMedias([...medias, ...files]);
+                            }}
+                          />
+                          <div className="row mt-5">
+                            {medias?.map((media: File) => {
+                              return (
+                                <MediaCard
+                                  key={media.name + media.lastModified}
+                                  media={media || null}
+                                  setMedias={setMedias}
+                                  medias={medias}
+                                  propertyId={currentProperty.id}
+                                />
+                              );
+                            })}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+                <form>
+                  <div className="homec-submit-form">
+                    <h4 className="homec-submit-form__title">
+                      Property Documents
+                    </h4>
+                    <div className="homec-submit-form__inner">
+                      <div className="row">
+                        <div className="mb-3">
+                          <input
+                            className="form-control"
+                            type="file"
+                            id="imageDetails"
+                            multiple
+                            value={""}
+                            accept=".pdf"
+                            onChange={(e) => {
+                              const files = Array.from(e.currentTarget.files);
+                              setDocuments([...documents, ...files]);
+                            }}
+                          />
+                          <div className="row mt-5">
+                            {documents?.map((file: File) => {
+                              return (
+                                <DocumentCard
+                                  doc={file}
+                                  docs={documents}
+                                  setDocuments={setDocuments}
+                                  propertyId={currentProperty.id}
+                                />
+                              );
+                            })}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </>
+            )}
           </div>
         </div>
       </div>

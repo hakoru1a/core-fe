@@ -95,45 +95,13 @@ export const propertySchema = yup.object({
     .max(160, "Độ dài tối đa là 160 ký tự"),
   description: yup.string(),
   propertyType: yup.string().required("Giá tiền của property là bắt buộc"),
-  rentPeriod: yup.string().required("Khoảng thời gian thuê bắt buộc"),
   area: yup.string().required("Diện tích bắt buộc"),
   bed: yup.string().required("Số phòng ngủ bắt buộc"),
   bath: yup.string().required("Số phòng nhà vệ sinh bắt buộc"),
   garage: yup.string().required("Số bãi đổ bắt buộc"),
   kitchen: yup.string().required("Số nhà bếp bắt buộc"),
   price: yup.string().required("Giá tiền của property là bắt buộc"),
-  thumbs: yup
-    .mixed()
-    .test("fileCount", "You must upload exactly 3 files", (value) => {
-      if (!value) return false; // Nếu value là undefined hoặc null, trả về false
-      if (!(value instanceof FileList)) {
-        // Nếu value không phải là một đối tượng FileList, trả về false
-        return false;
-      }
-      return value.length === 3;
-    }),
-
-  // imageDetails: yup
-  //   .mixed()
-  //   .test("fileCount", "You must upload exactly 10 files", (value) => {
-  //     if (!value) return false; // Nếu value là undefined hoặc null, trả về false
-  //     if (!(value instanceof FileList)) {
-  //       // Nếu value không phải là một đối tượng FileList, trả về false
-  //       return false;
-  //     }
-  //     return value.length === 10;
-  //   }),
-  // documents: yup.mixed().required("Documents bắt buộc"),
-  // video: yup
-  //   .mixed()
-  //   .test("fileCount", "You must upload exactly 1 video", (value) => {
-  //     if (!value) return false; // Nếu value là undefined hoặc null, trả về false
-  //     if (!(value instanceof FileList)) {
-  //       // Nếu value không phải là một đối tượng FileList, trả về false
-  //       return false;
-  //     }
-  //     return value.length === 1;
-  //   }),
+  rentPeriod: yup.string().required("Khoảng thời gian thuê bắt buộc"),
 });
 
 export type UserSchema = yup.InferType<typeof userSchema>;

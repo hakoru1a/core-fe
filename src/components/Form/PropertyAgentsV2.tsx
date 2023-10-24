@@ -1,17 +1,23 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import ProtoTypes from "prop-types";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import paymentApi from "../../apis/payment.api";
-import { useAuth } from "../../hooks/useAuth";
-import { BookingAppointmentRequest } from "../../types/appointment";
-import { convertTrueTime } from "../../utils/utils";
-import { useDispatch } from "react-redux";
-import useQueryParams from "../../hooks/useQueryParams";
-import { setProfileToLS } from "../../utils/auth";
-import { setGlobalUser } from "../../redux/slice/user.slice";
-import { useNavigate, useParams } from "react-router-dom";
+import propertyApi from "../../apis/property.api";
 import userApi from "../../apis/user.api";
+import { useAuth } from "../../hooks/useAuth";
+import useQueryParams from "../../hooks/useQueryParams";
+import { setGlobalUser } from "../../redux/slice/user.slice";
+import { socket } from "../../socket";
+import { BookingAppointmentRequest } from "../../types/appointment";
+import { setProfileToLS } from "../../utils/auth";
+import {
+  convertTrueTime,
+  getCurrentDataFromLS,
+  setCurrentDataToLS,
+} from "../../utils/utils";
 import Preloader from "../Loader";
 
 interface Props {
@@ -28,6 +34,7 @@ function PropertyAgentsV2({ image, name, position }: Props) {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput({
       ...input,
+      property: Number(id),
       appointmentDate: convertTrueTime(e.target.value),
     });
   };
@@ -43,6 +50,13 @@ function PropertyAgentsV2({ image, name, position }: Props) {
     onSuccess: (data) => {
       if (data?.data.data) {
         // Chuyển hướng trang hiện tại đến URL mới
+        setCurrentDataToLS({
+          property: property?.data.data,
+          customer: {
+            fullname: user?.fullname,
+          },
+          appointmentDate: input.appointmentDate,
+        });
         window.location.href = data?.data.data || window.location.href;
       }
     },
@@ -57,6 +71,7 @@ function PropertyAgentsV2({ image, name, position }: Props) {
       paymentApi.createPaymentForBooking(myPayment),
     onSuccess: async () => {
       const { data } = await userApi.getCurrentUser();
+      handleNotifyNewAppointment();
       setProfileToLS(data.data);
       dispatch(setGlobalUser(data.data));
       toast.success("Đặt lịch thành công");
@@ -84,8 +99,17 @@ function PropertyAgentsV2({ image, name, position }: Props) {
       }
     }
   }
+  const { isFetching, data: property } = useQuery({
+    queryKey: ["property", id, params],
+    queryFn: () => propertyApi.getDetailPropery(Number(id)),
+    enabled: !!id,
+  });
 
-  if (isLoading) return <Preloader />;
+  const handleNotifyNewAppointment = () => {
+    const dataEmit = getCurrentDataFromLS();
+    socket.emit("push-notify-new-appointment", dataEmit);
+  };
+  if (isLoading || isFetching) return <Preloader />;
 
   return (
     <div className="col-lg-4 col-12">
@@ -94,19 +118,8 @@ function PropertyAgentsV2({ image, name, position }: Props) {
         className="homec-property-ag homec-property-ag--side homec-bg-cover"
         style={{ backgroundImage: "url('/img/property-ag-bg.svg')" }}
       >
-        <h3 className="homec-property-ag__title">Property Agent</h3>
+        <h3 className="homec-property-ag__title">Booking appointment now !</h3>
         {/*  Property Profile  */}
-        <div className="homec-property-ag__author">
-          <div className="homec-property-ag__author--img">
-            <img src={image} alt="#" />
-          </div>
-          <div className="homec-property-ag__author--content">
-            <h4 className="homec-property-ag__author--title">
-              {name}
-              <span>{position}</span>
-            </h4>
-          </div>
-        </div>
         {/* End Property Profile  */}
         <form
           onSubmit={(e) => e.preventDefault()}
@@ -131,9 +144,10 @@ function PropertyAgentsV2({ image, name, position }: Props) {
             } else setIsSubmit(true);
           }}
         >
-          <span>Send Message Now</span>
+          <span>Setup Appointment</span>
         </button>
       </div>
+
       {/* End Property Agent Card */}
     </div>
   );

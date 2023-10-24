@@ -1,22 +1,47 @@
-import { useEffect, useState } from "react";
-import Header from "../../components/Header";
+import { useQuery } from "@tanstack/react-query";
+import { useNavigate, useParams } from "react-router-dom";
+import propertyApi from "../../apis/property.api";
 import Breadcrumbs from "../../components/Breadcrumbs";
 import HistoryLinks from "../../components/Breadcrumbs/HistoryLinks";
-import Footer from "../../components/Footer";
 import GoTopBtn from "../../components/Button/GoTopBtn";
+import Footer from "../../components/Footer";
+import Header from "../../components/Header";
 import Preloader from "../../components/Loader";
+import { Media } from "../../types/property.type";
+import PropertyDetails from "./PropertyDetails";
 import SingleSlider from "./SingleSlider";
 import ThumbnailsSlider from "./ThumbnilsSlider";
-import PropertyDetails from "./PropertyDetails";
-
+import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { setCurrentProperty } from "../../redux/slice/property.slice";
 function PropertySingle() {
-  const [isLoading, setIsLoading] = useState(true);
-  useEffect(() => {
-    setIsLoading(false);
-  }, []);
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { data, isFetching } = useQuery({
+    queryFn: () => propertyApi.getDetailPropery(Number(id)),
+    queryKey: ["property", "detail", id],
+    onSuccess: (res) => {
+      console.log(res.data.data);
+      dispatch(setCurrentProperty(res.data.data));
+    },
+    onError: (err) => {
+      console.log(err);
+      if (err) {
+        navigate("/property");
+        // toast.error("Trang này không tồn tại");
+      }
+    },
+  });
+  const getImagesFromMedia = () => {
+    return data?.data.data.medias?.filter((item: Media) =>
+      item.mediaType?.includes("image")
+    );
+  };
+  const images = getImagesFromMedia();
 
   let component = undefined;
-  if (isLoading) {
+  if (isFetching) {
     component = <Preloader />;
   } else {
     component = (
@@ -34,13 +59,17 @@ function PropertySingle() {
           <div className="container">
             <div className="row">
               <div className="col-12">
-                <SingleSlider />
-                <ThumbnailsSlider />
+                <SingleSlider
+                  images={images}
+                  title={data?.data.data.propertyName}
+                  address={data?.data.data.address}
+                />
+                <ThumbnailsSlider images={images} />
               </div>
             </div>
           </div>
         </section>
-        <PropertyDetails />
+        <PropertyDetails data={data?.data?.data} />
         <Footer />
         <GoTopBtn />
       </>

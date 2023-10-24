@@ -1,30 +1,50 @@
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import Breadcrumbs from "../../components/Breadcrumbs";
 import HistoryLinks from "../../components/Breadcrumbs/HistoryLinks";
 import GoTopBtn from "../../components/Button/GoTopBtn";
 import DownloadApp from "../../components/DownloadApp";
 import Footer from "../../components/Footer";
+import TimeTable from "../../components/Form/TimeTable";
 import Header from "../../components/Header";
 import Preloader from "../../components/Loader";
+import { setGlobalUser } from "../../redux/slice/user.slice";
+import { clearLS } from "../../utils/auth";
 import ChangePassword from "./ChangePassword";
 import InvoiceTable from "./InvoiceTable";
 import MyProperties from "./MyProperties";
 import PersonalInfo from "./PersonalInfo";
-import Reviews from "./Reviews";
 import Saved from "./Saved";
 import Sidebar from "./Sidebar";
-import TimeTable from "../../components/Form/TimeTable";
-
+import { socket } from "../../socket";
 function Dashboard() {
   // Inner navigation
   const [activeComponent, setActiveComponent] = useState("My Properties");
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   // navigate to logout
   useEffect(() => {
     if (activeComponent === "Logout") {
+      clearLS();
+      dispatch(
+        setGlobalUser({
+          id: "",
+          email: "",
+          fullname: "",
+          date_of_birth: "",
+          avatar: "",
+          address: "",
+          phone: "",
+          occupation: "",
+          times: 0,
+        })
+      );
       navigate("/");
+      socket.disconnect();
+      toast.success("Logout thành công");
     }
   }, [activeComponent, navigate]);
 
@@ -64,7 +84,6 @@ function Dashboard() {
                     {activeComponent === "Invoice" && <InvoiceTable />}
                     {activeComponent === "Personals Info" && <PersonalInfo />}
                     {activeComponent === "Saved" && <Saved />}
-                    {activeComponent === "Reviews" && <Reviews />}
                     {activeComponent === "My Time" && <TimeTable />}
                     {activeComponent === "Change Password" && (
                       <ChangePassword />

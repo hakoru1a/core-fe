@@ -7,13 +7,19 @@ import PropertyReview from "../../components/PropertyReview";
 import PropertyVideo from "../../components/PropertyVideo";
 import DetailsTab from "./DetailsTab";
 import DetailsTabFeatures from "./DetailsTabFeatures";
+import { Viewer, Worker } from "@react-pdf-viewer/core";
+import { Media } from "../../types/property.type";
 
-function PropertyDetails() {
+function PropertyDetails({ data }: any) {
   const [activeTab, setActiveTab] = useState("Property Details");
   const handleActive = (title: string) => {
     setActiveTab(title);
   };
-
+  const getVideoFromMedia = () => {
+    return data?.medias.filter((item: Media) =>
+      item?.mediaType?.includes("video")
+    );
+  };
   return (
     <section
       className="pd-top-0 homec-bg-third-color pd-btm-80 homec-bg-cover"
@@ -101,19 +107,44 @@ function PropertyDetails() {
                     ]}
                     check={true}
                   />
+                  {data?.documents?.map((doc: any) => {
+                    return (
+                      <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
+                        <div
+                          style={{
+                            border: "1px solid rgba(0, 0, 0, 0.3)",
+                            height: "750px",
+                          }}
+                        >
+                          <Viewer fileUrl={doc.url} />
+                        </div>
+                      </Worker>
+                    );
+                  })}
                 </DetailsTab>
                 <FloorDetails isActive={activeTab === "Floor Plans"} />
-                <PropertyVideo
-                  isActive={activeTab === "Property Video"}
-                  img="https://placehold.co/785x410"
-                  text="Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden end to main to marked."
-                />
+                {getVideoFromMedia()?.map((video: Media) => {
+                  return (
+                    <PropertyVideo
+                      isActive={activeTab === "Property Video"}
+                      img="https://placehold.co/785x410"
+                      src={video.url}
+                      text="Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden end to main to marked."
+                    />
+                  );
+                })}
                 <PropertyLocation
-                  address="70 Washington Square South, New York, NY 10012, United States"
+                  address={
+                    data?.address ||
+                    "70 Washington Square South, New York, NY 10012, United States"
+                  }
                   text="Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden end to main to marked."
                   isActive={activeTab === "Locations"}
                 />
-                <PropertyReview isActive={activeTab === "Review"} />
+                <PropertyReview
+                  // comments={data.comment}
+                  isActive={activeTab === "Review"}
+                />
               </div>
             </div>
           </div>

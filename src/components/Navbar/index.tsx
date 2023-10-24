@@ -1,7 +1,7 @@
 import ProtoTypes from "prop-types";
-import NavBtn from "./NavBtn";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
+import NavBtn from "./NavBtn";
 
 interface NavbarProps {
   handleSidebar: () => void;
@@ -10,6 +10,7 @@ interface NavbarProps {
 
 function Navbar({ handleSidebar, secondNav }: NavbarProps) {
   const user = useAuth();
+
   return (
     <div className={"homec-header__middle"}>
       <div className={"container"}>
@@ -107,15 +108,17 @@ function Navbar({ handleSidebar, secondNav }: NavbarProps) {
                     className="homec-btn homec-btn__second"
                   >
                     <span>
-                      Add Property: <strong>{user.times} </strong>
-                      {user.times > 1 ? "turns" : "turn"}
+                      Add Property:
+                      {user?.id !== "" && <strong>{user.times} </strong>}
+                      {user?.id !== "" && user.times > 1 ? "turns" : "turn"}
                     </span>
                   </Link>
                 ) : (
                   <Link to="/add-property" className="homec-btn">
                     <span>
-                      Add Property: <strong>{user.times} </strong>
-                      {user.times > 1 ? "turns" : "turn"}
+                      Add Property
+                      {user?.id !== "" && <strong>: {user.times} </strong>}
+                      {user?.id !== "" && (user.times > 1 ? "turns" : "turn")}
                     </span>
                   </Link>
                 )}

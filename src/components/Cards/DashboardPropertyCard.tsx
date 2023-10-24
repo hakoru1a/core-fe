@@ -1,5 +1,7 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-
+import propertyApi from "../../apis/property.api";
+import { toast } from "react-toastify";
 function DashboardPropertyCard({
   status,
   image,
@@ -10,6 +12,20 @@ function DashboardPropertyCard({
   location,
   id,
 }: any) {
+  const queryClient = useQueryClient();
+  const { mutate } = useMutation({
+    mutationFn: (id: number) => propertyApi.deleteProperty(Number(id)),
+    onSuccess: () => {
+      toast.success("Xoá thành công");
+      queryClient.invalidateQueries({
+        queryKey: ["properties", "my-property"],
+        exact: true,
+      });
+    },
+  });
+  const deleteProperty = (id: number) => {
+    mutate(id);
+  };
   const navigate = useNavigate();
   return (
     <div className="homec-dashboard-property mg-top-30">
@@ -47,20 +63,22 @@ function DashboardPropertyCard({
       </div>
       {/* Property Button */}
       <div className="homec-dashboard-property__buttons">
-        <button
-          className="homec-dashboard-property__btn"
-          onClick={() => navigate(`/property/${id}`)}
-        >
-          <svg
-            width="23"
-            height="14"
-            viewBox="0 0 23 14"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
+        {status === "ACTIVE" && (
+          <button
+            className="homec-dashboard-property__btn"
+            onClick={() => navigate(`/property/${id}`)}
           >
-            <path d="M11.6793 0.0471191C7.48656 0.0471191 3.68437 2.341 0.878736 6.06688C0.649796 6.37213 0.649796 6.79859 0.878736 7.10384C3.68437 10.8342 7.48656 13.1281 11.6793 13.1281C15.872 13.1281 19.6742 10.8342 22.4799 7.10833C22.7088 6.80308 22.7088 6.37662 22.4799 6.07137C19.6742 2.341 15.872 0.0471191 11.6793 0.0471191ZM11.9801 11.1933C9.19687 11.3684 6.8985 9.07452 7.07357 6.28684C7.21722 3.98847 9.08016 2.12553 11.3785 1.98188C14.1617 1.80681 16.4601 4.10069 16.285 6.88837C16.1369 9.18225 14.2739 11.0452 11.9801 11.1933ZM11.8409 9.06554C10.3416 9.15981 9.1026 7.92533 9.20136 6.426C9.27767 5.18704 10.2832 4.18599 11.5222 4.10518C13.0215 4.01091 14.2605 5.24539 14.1617 6.74472C14.0809 7.98818 13.0754 8.98923 11.8409 9.06554Z" />
-          </svg>
-        </button>
+            <svg
+              width="23"
+              height="14"
+              viewBox="0 0 23 14"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M11.6793 0.0471191C7.48656 0.0471191 3.68437 2.341 0.878736 6.06688C0.649796 6.37213 0.649796 6.79859 0.878736 7.10384C3.68437 10.8342 7.48656 13.1281 11.6793 13.1281C15.872 13.1281 19.6742 10.8342 22.4799 7.10833C22.7088 6.80308 22.7088 6.37662 22.4799 6.07137C19.6742 2.341 15.872 0.0471191 11.6793 0.0471191ZM11.9801 11.1933C9.19687 11.3684 6.8985 9.07452 7.07357 6.28684C7.21722 3.98847 9.08016 2.12553 11.3785 1.98188C14.1617 1.80681 16.4601 4.10069 16.285 6.88837C16.1369 9.18225 14.2739 11.0452 11.9801 11.1933ZM11.8409 9.06554C10.3416 9.15981 9.1026 7.92533 9.20136 6.426C9.27767 5.18704 10.2832 4.18599 11.5222 4.10518C13.0215 4.01091 14.2605 5.24539 14.1617 6.74472C14.0809 7.98818 13.0754 8.98923 11.8409 9.06554Z" />
+            </svg>
+          </button>
+        )}
 
         {status === "DEACTIVE" && (
           <>
@@ -80,7 +98,10 @@ function DashboardPropertyCard({
                 <path d="M18.1844 1.22954C17.8315 0.876613 17.2593 0.876613 16.9064 1.22954L16.0117 2.12419L18.3123 4.42472L19.2069 3.53007C19.5598 3.17714 19.5598 2.60494 19.2069 2.25202L18.1844 1.22954Z" />
               </svg>
             </button>
-            <button className="homec-dashboard-property__btn homec-dashboard-property__btn--delete">
+            <button
+              onClick={() => deleteProperty(id)}
+              className="homec-dashboard-property__btn homec-dashboard-property__btn--delete"
+            >
               <svg
                 width="16"
                 height="21"

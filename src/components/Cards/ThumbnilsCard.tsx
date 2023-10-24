@@ -1,6 +1,6 @@
 import ProtoTypes from "prop-types";
 
-function ThumbnilsCard({ img }: any) {
+function ThumbnilsCard({ img }: { img: string }) {
   return (
     <div style={{ margin: "10px" }}>
       <div className="single-thumbs">

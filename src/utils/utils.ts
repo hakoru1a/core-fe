@@ -140,3 +140,14 @@ export function getNextMonday() {
 
   return `${day}-${month}-${year}`;
 }
+
+export const getCurrentDataFromLS = () =>
+  JSON.parse(localStorage.getItem("curr_data") || "");
+
+export const setCurrentDataToLS = (data: any) => {
+  localStorage.setItem("curr_data", JSON.stringify(data));
+};
+
+export const isFileImage = (file: File) => {
+  return file && file["type"].split("/")[0] === "image";
+};

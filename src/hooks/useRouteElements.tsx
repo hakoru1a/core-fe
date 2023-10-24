@@ -23,16 +23,20 @@ import Property from "../pages/Property";
 import PropertySingle from "../pages/PropertySingle/index.js";
 import SignUp from "../pages/SignUp/index.js";
 import { useAuth } from "./useAuth.js";
+import Chat from "../pages/Chat/index.js";
 
 function RejectedRoute() {
   const user = useAuth();
-  const isAuthenticated = user.id !== "";
+  console.log(user);
+
+  const isAuthenticated = user?.id !== "";
   return !isAuthenticated ? <Outlet /> : <Navigate to="/" />;
 }
 
 function ProtectedRoute() {
   const user = useAuth();
-  const isAuthenticated = user.id !== "";
+  console.log(user);
+  const isAuthenticated = user?.id !== "";
   return isAuthenticated ? <Outlet /> : <Navigate to="/login" />;
 }
 
@@ -54,6 +58,10 @@ function useRouteElements() {
           element: <SignUp />,
         },
       ],
+    },
+    {
+      element: <Chat />,
+      path: "/chat",
     },
     {
       element: <MainLayout />,

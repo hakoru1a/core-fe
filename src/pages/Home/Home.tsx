@@ -1,27 +1,34 @@
 import { useEffect, useState } from "react";
+import About from "../../components/About/About";
+import Agents from "../../components/Agents";
+import GoTopBtn from "../../components/Button/GoTopBtn";
+import DownloadApp from "../../components/DownloadApp";
+import Features from "../../components/Features";
+import Footer from "../../components/Footer";
 import Header from "../../components/Header";
 import HomecHero from "../../components/HomecHero";
-import PropertyListing from "../../components/PropertyListing";
-import Preloader from "../../components/Loader";
-import About from "../../components/About/About";
 import LatestProperty from "../../components/LatestProperty";
-import Features from "../../components/Features";
-import Agents from "../../components/Agents";
-import DownloadApp from "../../components/DownloadApp";
-import Footer from "../../components/Footer";
-import GoTopBtn from "../../components/Button/GoTopBtn";
+import Preloader from "../../components/Loader";
+import PropertyListing from "../../components/PropertyListing";
+import { useAuth } from "../../hooks/useAuth";
+import { socket } from "../../socket";
 import Blog from "../Blog";
 import FaqSection from "../Faq/FaqSection";
-import TimeTable from "../../components/Form/TimeTable";
 
 function Home() {
-  const [isLoading, setisLoadingg] = useState(true);
-
+  const [isLoading, setisLoading] = useState(true);
+  const user = useAuth();
   useEffect(() => {
-    setTimeout(() => {
-      setisLoadingg(false);
+    const timer = setTimeout(() => {
+      !!user.id && socket.connect();
+      socket.emit("init-user", { ...user, role: "CUSTOMER" });
+      setisLoading(false);
     }, 1000);
-  }, []);
+    return () => {
+      clearTimeout(timer);
+      !!user.id && socket.disconnect();
+    };
+  }, [user]);
 
   let component = undefined;
   if (isLoading) {
@@ -40,7 +47,6 @@ function Home() {
         <DownloadApp />
         <Blog />
         <Footer />
-        <TimeTable />
         <GoTopBtn />
       </>
     );

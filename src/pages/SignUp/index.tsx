@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import authApi from "../../apis/auth.api";
 import WelcomeCard from "../../components/Cards/WelcomeCard";
-import PropertyTextInput from "../../components/Form/PropertyTextInput";
+import PropertyTextInputV2 from "../../components/Form/PropertyTextInputV2";
 import Preloader from "../../components/Loader";
 import { Schema, UserSchema, schema, userSchema } from "../../utils/rules";
 
@@ -35,12 +35,11 @@ function SignUp() {
   const navigate = useNavigate();
   const { mutate, isLoading } = useMutation({
     mutationFn: (data: RegisterForm) => authApi.register(data),
-    onSuccess: (data) => {
+    onSuccess: () => {
       toast.success("Kiểm tra email để kích hoạt tài khoản", {
         autoClose: false,
       });
       navigate("/");
-      console.log(data);
     },
   });
   // const navigate = useNavigate();
@@ -78,7 +77,7 @@ function SignUp() {
                     onSubmit={onSubmit}
                   >
                     <div className="row">
-                      <PropertyTextInput
+                      <PropertyTextInputV2
                         size="col-lg-6 col-md-6"
                         title="Email*"
                         placeholder="Jhon@gmail.com"
@@ -88,7 +87,7 @@ function SignUp() {
                         type="email"
                         errorMessage={errors.email?.message}
                       />
-                      <PropertyTextInput
+                      <PropertyTextInputV2
                         size="col-lg-6 col-md-6"
                         title="Username*"
                         placeholder="Jhon"
@@ -98,7 +97,7 @@ function SignUp() {
                         type="text"
                         errorMessage={errors.username?.message}
                       />
-                      <PropertyTextInput
+                      <PropertyTextInputV2
                         size="col-lg-6 col-md-6"
                         title="Fullname*"
                         placeholder="Jhon"
@@ -108,7 +107,7 @@ function SignUp() {
                         type="text"
                         errorMessage={errors.fullname?.message}
                       />
-                      <PropertyTextInput
+                      <PropertyTextInputV2
                         size="col-lg-6 col-md-6"
                         title="Phone*"
                         placeholder="03344xxxx"
@@ -118,7 +117,7 @@ function SignUp() {
                         type="text"
                         errorMessage={errors.phone?.message}
                       />
-                      <PropertyTextInput
+                      <PropertyTextInputV2
                         size="col-lg-6 col-md-6"
                         title="Password*"
                         margin="-10px"
@@ -128,7 +127,7 @@ function SignUp() {
                         type="password"
                         errorMessage={errors.password?.message}
                       />
-                      <PropertyTextInput
+                      <PropertyTextInputV2
                         size="col-lg-6 col-md-6"
                         title="Confirm Pasword*"
                         placeholder="********"
@@ -145,7 +144,7 @@ function SignUp() {
                           className="homec-btn homec-btn__second"
                           type="submit"
                         >
-                          <span>Login</span>
+                          <span>Sign up</span>
                         </button>
                         <button
                           className="homec-btn homec-btn__second homec-btn__social"

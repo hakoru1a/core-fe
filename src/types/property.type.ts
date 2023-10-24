@@ -23,7 +23,7 @@ export interface Property {
     id: number;
     name: string;
   }[];
-  media: Media[];
+  medias: Media[];
 }
 
 export interface Media {
@@ -36,4 +36,10 @@ export interface Location {
   city: string;
   district: string;
   street: string;
+}
+
+export interface Document {
+  id?: number;
+  documentName?: string;
+  url?: string;
 }

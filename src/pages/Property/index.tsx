@@ -24,7 +24,7 @@ function Property() {
   if (isFetching) {
     component = <Preloader />;
   } else {
-    const totalPage = data?.data.data.totalPages || 1;
+    const totalPage = data?.data?.data?.totalPages || 1;
     const handelPage = (page: string | number) => {
       if (page === "prev") {
         if (currentPage > 1) {
@@ -50,7 +50,7 @@ function Property() {
           />
         </Breadcrumbs>
         <PropertyGrid
-          data={data?.data.data.content || []}
+          data={data?.data.data?.content || []}
           currentPage={Number(params?.page || 1)}
           handelPage={handelPage}
           totalPage={totalPage}
